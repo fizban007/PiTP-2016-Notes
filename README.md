@@ -5,7 +5,7 @@ This repository is my attempt at recording notes for the
 [2016 PiTP summer school](https://pitp.ias.edu/) at IAS, Princeton.
 
 #Useful links
-=============
+-------------
 
 [Program Schedule](https://pitp.ias.edu/program-schedule)
 
