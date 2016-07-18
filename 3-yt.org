@@ -1,0 +1,8 @@
+#+TITLE: yt: A Python-based Framework for Visualization and Analysis of Physical Simulations
+#+AUTHOR: John ZuHone
+#+STARTUP: content
+#+STARTUP: hidestars
+#+LATEX_HEADER: \usepackage{tikz} 
+#+LATEX_HEADER: \usepackage{amsmath} 
+
+John, your slides are so good that I don't want to take notes at all.
