@@ -6,3 +6,7 @@
 #+LATEX_HEADER: \usepackage{amsmath} 
 
 John, your slides are so good that I don't want to take notes at all.
+
+Link to the [[yt-project.org/pitp2016_demo/yt_tutorial.slides.html][slides]].
+
+FYI, yt stands for yours truely, for reasons unknown.
