@@ -277,6 +277,185 @@ to follow paths.
 \section{Lecture 2}
 \label{sec:lec2}
 
+\subsection{Mapping Channels}
+
+\subsubsection{Color}
+
+We talked about arranging and aligning graphs, and now we will talk about
+mapping the data into colors and other channels.
+
+We will talk about color in three channels: luminance, saturation, and hue. Hue
+is a categorical channel which distinguishes color by themselves. Luminance and
+saturation however, can represent magnitude or ordered data. In the language of
+computers we use RGB to encode color, but it is terrible to encode data because
+it doesn't align with human perception. It can be a lot safer to use the HSL
+language which directly uses the three channels, but beware that the L in the
+HSL system stands for lightness, not luminance. In the HLS system lightness is
+independent of the color hue, but the human eyes responds to luminance which is
+different for different color hues. For example, yellow looks much brighter than
+blue. The eye detects edges using luminance, so it is a good idea to use it to
+denote clusters and borders.
+
+There are different colormap designs. There is categorical color map which map
+different categories of data to different color hues. We could have sequential
+data to represent two ends, or we could have diverging color scheme. However,
+beware of bivariate colormaps when we try to combine two kinds of colormaps. It
+is in general okay to use categorical with sequential, but other combinations
+might not work quite as well as you hoped. By the way, Brewer is the one who
+created a series of very good color schemes which are safe to use.
+
+There are a couple of principles when using color channels. Small regions need
+high saturation, whereas large regions needs low saturation. Saturation and
+luminance is hard for the human eyes to distinguish in small increments, so it
+is about 3-4 bins max for us to easily distinguish.
+
+When similar colors are next to each other, it is much easier to distinguish
+them, but if they are separated into small noncontiguous regions, then we could
+only distinguish 6-12 bins, since human eyes want to group similar colors
+together automatically. When we ant more bins, we can combine colors with sizes
+and other channels.
+
+For ordered color maps, we often find the rainbow color scheme as the default
+scheme, which is a terrible default! The color hues are not perceptually
+ordered, and perceptively nonlinear. Certain regions in the rainbow like yellow
+and cyan represents more transition than other regions. If we use fewer hues we
+can see large-scale structures better. If we want to see fine structures then we
+can use multiple hues with monotonically increasing luminance (\href{https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html}{viridis}). If we
+really want to keep rainbow, its best strength is its many hues, so we could use
+segmented rainbow to show binned or categorical data.
+
+\subsubsection{Other Channels}
+
+For sizes, people are good at judging lengths, less so for area, and even less
+so for 3D volume. People are generally good at judging angles, but the accuracy
+could be nonlinear. Shapes could be very useful since people are good at
+distinguishing different low-level primitive shapes, and combinations of them.
+Motion is also a very powerful channel, but it could be too strong that it draws
+your attention visually and might distract you from other channels. It is
+extremely good for highlighting.
+
+\subsection{Handling Complexity}
+
+We want to introduce 3 more strategies to handle complexities in visual
+representation.
+
+\subsubsection{Manipulate}
+
+Manipulating the data can be done in several different ways. One way is to
+change the view over time. It could be done interactively or simply showing the
+data twice in different views. One could also reorder data in different
+attribute values, which gives a sense of ranking. Another thing one can do is
+realign, especially when there are different things to compare.
+
+In general, animated transitions are good because it is obviously a change of
+view over time. For example, when we zoom in or zoom out of a region, it can be
+a good way to help people understand what is going on.
+
+For interactive selection, there are a few basic operations for basic
+interaction, for example clicking with a mouse, hovering, or moving across.
+There are also multiple ways to highlight selected targets. One way is to change
+the color of the subject, or we could let it bounce or change size.
+
+We could use navigation to change the visibility of items. For example, we could
+move our camera to pan, translate, and rotate, in order to focus our viewpoint to some
+specific region. A more advanced example would be semantic zooming, where the
+visualization technique depends on the size of the constraining box. Example on
+page 97 of the notes.
+
+However free navigation is very disorienting. It is much better to have
+constrained navigation on the animated transitions so that the viewer has a
+better sense of trajectory and trail.
+
+Another way of navigating is slicing, cutting, or projecting the data, in order
+to reduce complexity. The first two are quite self-explanatory. Projection is a
+way to change the mathematics of image creation, like reducing the dimension
+from 3 to 2.
+
+\subsubsection{Facet}
+
+Faceting into multiple different views is also a very powerful technique. There
+are many ways to do this. \emph{Juxtapose} is a way to share something between
+different datasets, for example sharing encoding, subsets of data, or
+navigation.
+
+As an example, shared highlighting on different facets of the same dataset can
+reveal how the same subset of data is distributed in different order/view. It
+can also be implemented with interactivity, where you can select a subset in one
+panel and view the distribution in another graph on another panel.
+
+Another example is the bird's-eye map view of Google map. The user can pan and
+zoom the camera, but a small bird's eye view at the corner will always tell the
+user where in general is the user looking at.
+
+Why not show this in animation? The reason is that the disparate frames and
+regions make comparison difficult. Especially when there are different things
+happening, it can be very difficult for the human eye to keep track of what is
+going on in time. The safe special case is animated transitions, where it is
+naturally going from one state to another.
+
+Why do we juxtapose views? It can be beneficial for the cognitive load because
+the eye can move quickly between two views, thus removing the requirement of
+putting the view into short term memory. The cost of this however, is that we
+run out area to display. We can run out of pixels very quickly on the screen.
+
+It is an open question how many views is okay. But it is definitely important to
+investigate the power of multiple views. It is generally useful to have multiple
+linked views and reorderable, so that one can look at data simultaneously in
+different angles.
+
+The second question to ask is how to \emph{partition} the data. This is the
+question of how to divide data between different views. One could partition into
+side by side views. Check out the examples in the slides: List alignment and
+recursive subdivision.
+
+One last thing to think about is to \emph{superimpose} layers. We can
+superimpose different layers of spread-out objections in the same region. If we
+are going to do this we need to use different data channels for different
+layers, and not to use to many layers in the first place.
+
+One principle for using layers is that the background layer should have low
+saturation. Another thing to remember is that if you should first try to make it
+look right in black and white, which is the ultimate luminance contrast.
+Superimpose and be used interchangeably with juxtapose. Some advice would be to
+use superimpose for local, and juxtapose for global.
+
+\subsection{Reduce}
+
+Lets finally talk about this idea of data reduction and filtering. There are
+many different ways to do this. Filter is the most obvious thing to do: you just
+throw things away. It is very straightforward both cognitively and
+computationally. However, the con is that the user will almost always just
+forget about what they don't see. This can lead to a lot of misconceptions.
+
+Aggregation is the alternative to filtering. We don't simply discard what we
+don't want to draw, but show them in a somewhat reduced/averaged way. However,
+it is difficult to avoid losing signal and still be effective.
+
+However these techniques are not exclusive. A lot of systems actually combine
+all of these techniques at the same time. A great way of doing filtering is to
+dynamically filter with interactive result display. One can iteratively change
+the filter criteria to achieve the desired complexity.
+
+Histogram is an example of static aggregation. The shown data is derived data
+from a given table. In the histogram the keys are bins and values are counts.
+The bin size is crucial since patterns can change dramatically with
+discretization.
+
+There is also an idiom of scented widgets. A danger of interaction is for it to
+degrade into manual search, which is wasteful of time. Scented widgets shows
+with color cues what would happen when people move the sliders, or show people
+where there might be interesting things to see.
+
+The boxplot is also a useful aggregation tool. The box plot plots 5 derived
+statistical data: median, lower/upper quartile, and lower/upper fences. One
+could even put in outliers that do not fit in the distribution.
+
+Another reduction technique is dimensionality reduction. When we can't directly
+measure what we care about, for example when the dimensionality of dataset
+conjectured to be much smaller than the dimensionality of measurements. If we
+have a 9D parameter space for measured data, we can plot the derived data in a,
+e.g., 2D target space, and it might reveal cluster structures, hidden variables,
+etc.
 
 
 
