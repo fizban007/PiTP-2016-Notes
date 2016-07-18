@@ -42,6 +42,8 @@ probably contain a lot less information than the previous one. Fortunately the
 notes by the speaker is available
 \href{http://www.cs.ubc.ca/~tmm/talks.html#vad16pitp}{here}.
 
+\subsection{Visualization}
+
 Lets start with the definition of visualization. Computer-based visualization
 systems provide visual presentatinos of datasets designed to help people carry
 out tasks more effectively. When there is fully automated solutions,
@@ -64,6 +66,8 @@ find unexpected patterns, etc. The so-called Anscombe's Quartet shows 4 datasets
 with identical statistics, but look completely differently when plotted. These
 kind of situations are where it is very useful to show the whole dataset at the
 same time without losing details.
+
+\subsection{Framework}
 
 We can build an analysis framework by putting it under 4 levels and ask 3
 questions. The first level is \emph{domain}, i.e. ``who are the target users''?
@@ -92,6 +96,10 @@ cognitive psychology. At the higher levels we start to venture into the
 field of anthropology/ethnography. Here we are talking about problem-driven
 work.
 
+\subsection{Questions}
+
+\subsubsection{What}
+
 Lets start by asking the question of \emph{What}. There are three main types of
 datasets: tables, networks, and spatial (fields or geometry). Tables are easy to
 understand, with columns and rows. Networks are like graphs with nodes and links
@@ -103,6 +111,8 @@ could have categorical data, or those with intrinsic ordering. With the latter
 we also have the question of which ordering direction
 (sequential/diverging/cyclic). In situations where the data is cyclic it could
 represent some interesting challenges.
+
+\subsubsection{Why}
 
 Lets now look at the question of \emph{Why}. We can split the question into
 actions and targets. On the action side, we typically want to analyze/query
@@ -126,6 +136,8 @@ Now lets talk about the targets. We might want to present trends, outliers, or
 features, where the last one is an all-encompassing way to say things for
 example quantitative\dots
 
+\subsubsection{How}
+
 Lets now talk about the important question of \emph{How}. First thing we need to
 do is to encode data. There are various structures for visually encoding the
 data. To talk about this, we introduce marks and channels. Marks are geometric
@@ -133,6 +145,8 @@ primitives, and channels control the appearance of marks, e.g. color, position,
 size, etc. We can use different channels to encode the same data to bring
 emphasis to the data, or we could add different channels to encode different
 content to squeeze in more information.
+
+\subsubsection{Marks and Channels}
 
 The different idiom structures of visually encoding the data are combinations of
 marks and channels. A histogram is using the vertical positions of lines to
@@ -178,6 +192,10 @@ Therefore to represent the comparison of data, accuracy increases with common
 frame/scale and alignment. The ratio of increment vs.\ common background
 determines the ease of judgment.
 
+\subsection{Common Idioms for Different Datasets}
+
+\subsubsection{Tables}
+
 Now lets to talk how to use space to encode each of the data types. The first is
 \emph{tables}. Lets use the computer science words key and values to denote the
 table. The key is an independent attribute to uniquely index the items we want
@@ -218,6 +236,8 @@ normalized stacked bar chart.
 There are interesting cases where one could use radial orientation to represent
 data. One example is glyphmaps to represent cyclic data.
 
+\subsubsection{Spatial Data}
+
 Let's talk about spatial data now. We often want to use directly the data we are
 given, since the data is encoded directly in the position they are given. For
 example the choropleth map is to color-code the different regions of a map to
@@ -236,6 +256,8 @@ we just show local directions. We could also have geometric flow that trace the
 trajectory of particles. We could have texture flow and feature flow. In general
 there is no single best way but it depends on the task we want to carry out.
 
+\subsubsection{Networks}
+
 The last data type is networks, which is when we add links to the dataset. One
 way is simply use node/lines to directly show the networked graph. This is good
 for exploring topology, locating paths and clusters, etc. It is tricky however
@@ -252,9 +274,9 @@ strength of this representation lies in the scalability.
 We could also use a radial node-link tree. It is easy to understand topology and
 to follow paths.
 
+\section{Lecture 2}
+\label{sec:lec2}
 
-This feels like a shitty essay to type out. I'm not going to take notes for the
-second part\dots
 
 
 
