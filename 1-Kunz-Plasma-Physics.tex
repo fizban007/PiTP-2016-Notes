@@ -36,6 +36,8 @@
 \section{Lecture 1 - Magnetohydrodynamics (MHD)}
 \label{sec:lec1}
 
+The officially provided notes is at \href{https://pitp.ias.edu/sites/pitp/files/kunz_1.pdf}{here}.
+
 \begin{table}[h]
   \centering
   \begin{tabular}{|c|c|c|c|c|}
@@ -119,12 +121,13 @@ gets you start to question whether this medium behaves like a fluid.
 
 The last length scale is called $\rho_i$ which is $v_{th,i} / \Omega_i$ which is
 the thermal speed divided by the gyro-frequency of the ion. This is the size of
-a particle under gyration in a magnetic field. This scale is tiny compared to
+a particle's gyration in a magnetic field. This scale is tiny compared to
 most of other scales, which is characteristic of astrophysical plasmas. This
 means the particles know about the magnetic field.
 
 One more thing is the typical gyro-frequencies of particles. The table gives a
-nice impression of the separation of scales for astrophysical situations.
+nice impression of the separation of scales for astrophysical situations. In a
+typical plasma we should have $\lambda_\mathrm{Debye} \ll \rho_i \ll \lambda_{mfp}$
 
 Now we will just write down the equations for plasma. Lets fix some notations
 first. $\varrho$ is different from $\rho$, where the later means charge density,
@@ -216,7 +219,7 @@ that is not exactly true. Lets define $\hat{b} = \mathbf{B}/B$. We can write
 the Lorentz force as
 \begin{equation}
   \label{eq:11}
-  \frac{B^2}{4\pi} \hat{b}\cdot\nabla \hat{b} - (\mathbf{I} - \hat{b} \hat{b})\cdot \nabla \frac{B^2}{8\pi}
+  \mathbf{F} = \frac{B^2}{4\pi} \hat{b}\cdot\nabla \hat{b} - (\mathbf{I} - \hat{b} \hat{b})\cdot \nabla \frac{B^2}{8\pi}
 \end{equation}
 The first term is apparently perpendicular to the field line, and can be thought
 of as the curvature force, as in the curved field line wants to be straightened.
@@ -335,6 +338,274 @@ that's about it, because solar wind the fluid is not very collisional. In ICM
 the collision is not quite strong enough. In GC the mean free path is about the
 Bondi radius, especially if we keep going in near the black hole it is worse.
 ISM has a cold and a warm phase, but both are pretty good for MHD.
+
+\section{Lecture 2 - Kinetics}
+\label{sec:lec2}
+
+Lets start with a recap. MHD is a fluid theory, where $\lambda_\mathrm{Debye}$
+is infinitesimal, meaning the fluid is quasi neutral. Another thing is that the
+ion gyro path is infinitesimal. The third quantity is the mean free path which
+is infinitesimal. MHD is a fluid theory of infinitesimal fluid elements subject
+to the Lorentz force.
+
+What if we want to relax some of the above assumptions? Suppose we are dealing
+with ICM, SW, GC, etc.\ which are not in the ideal MHD regime. There are a
+number of different ways to relax the assumptions:
+\begin{itemize}
+    \item Tracing particle motion, guiding center motion. Most of the kinetic
+      discussions start with particle motion.
+    \item Adiabatic invariance, pressure anisotropy. Deviations from Maxwell distribution.
+    \item Braginskii-MHD and ``CGL'' equations (monograph from 1965).
+    \item What if collisions are not strong enough? We need to give up MHD as a theory:
+    \item Vlasov-Landau kinetic equation. Dealing with distribution functions directly.
+    \item Ordering parameters. For the system of interest, what are the small
+      parameters so that we can expand our system of equations in terms of these
+      small parameters?
+    \item Kinetic MHD:\@Barnes \& Landau damping, Firehose \& mirror instabilities.
+    \item Preview of gyrokinetics. This is an advanced tool that astrophysics
+      should pick up in their toolset. A simple derivation is in the notes.
+\end{itemize}
+
+\subsection{Particle Motion}
+
+There are two types of particle motion in EM field. If we have a particle at
+position $\mathbf{r}$, which is gyrating along some $\mathbf{B}$ field. It makes
+a lot of sense to define another vector $\mathbf{R}$ which is the center of the
+Larmor motion of the particle. The motion of the particle can be decomposed into
+the motion of the guiding center and the gyration itself. Let $\mathbf{r} =
+\mathbf{R} + \mathbf{\rho}$. We have
+\begin{equation}
+  \label{eq:22}
+  \mathbf{\rho} = -\frac{\mathbf{v}\times \hat{b}}{\Omega}, \quad \hat{b} = \frac{\mathbf{B}}{B},\quad \Omega = \frac{qB}{mc}
+\end{equation}
+
+If $B$ and $E$ are uniform and time independent, we can easily write down how
+the guiding center evolves
+\begin{equation}
+  \label{eq:23}
+  \begin{split}
+    \dot{\mathbf{R}} &= \dot{\mathbf{r}} - \dot{\rho} \\
+    &= \mathbf{v} + \frac{q}{m}\left[ \mathbf{E} + \frac{\mathbf{v}\times \mathbf{B}}{c} \right]\times\frac{\hat{b}}{\Omega} \\
+    &= v_{\parallel}\hat{b} + c\frac{\mathbf{E} \times \mathbf{B}}{B^2}
+  \end{split}
+\end{equation}
+The second term is called the ``E cross B'' drift. To get an idea of what it
+does, consider a particle in a $B$ field which simply gyrates in a circle. If we
+add $E$ field to the system. We know that $\rho = v_{\perp}/\Omega$. As particle
+gyrates it gets accelerated so $\rho$ increases, but when it comes back it
+decelerates. So on average its gyration is drifting in the $\mathbf{E}\times
+\mathbf{B}$ direction.
+
+The important thing about this drift is that it is species-independent. This
+means that this drift introduces no current. For general force $\mathbf{F} \neq
+q\mathbf{E}$, we can generalize the formula for the drift to be
+\begin{equation}
+  \label{eq:24}
+  \dot{\mathbf{R}}_\mathrm{dirft} = \frac{c \mathbf{F}\times \mathbf{B}}{qB^2}
+\end{equation}
+
+Now lets make the magnetic field non-uniform but still static. Lets repeat the
+whole calculation. The total derivative is with respect to the particle
+trajectory $d/dt \to \partial/\partial t + \mathbf{v}\cdot\nabla$
+\begin{equation}
+  \label{eq:25}
+  \begin{split}
+    \dot{\mathbf{R}} &= \dot{\mathbf{r}} - \dot{\rho} \\
+    &= v_{\parallel}\hat{b} + \frac{c \mathbf{E}\times \mathbf{B}}{B^2} + \mathbf{v}\times \frac{d}{dt}\left( \frac{\hat{b}}{\Omega} \right)
+  \end{split}
+\end{equation}
+The last term is new. It will give two things: grad-B drift and the curvature
+drift. From the mathematics view it is just vector calculus, but we can reason
+it from the physics point of view. We associate a force to when $B$ is
+non-uniform, and a force to when $B$ has some curvature. When $B$ is not
+uniform, remember
+\begin{equation}
+  \label{eq:26}
+  \mathbf{F} = \nabla \left( \mu \cdot \mathbf{B} \right), \quad \mu = -\frac{1}{2}\frac{mv_{\perp}^2}{B}\hat{b}
+\end{equation}
+If we put this into the formula we get
+\begin{equation}
+  \label{eq:27}
+  \hat{\mathbf{v}}_{\nabla B} = \frac{v_{\perp}^2}{2\Omega}\hat{b}\times \nabla \ln \mathbf{B}
+\end{equation}
+This means that the particle drifts perpendicular to the direction where there
+is gradient of $B$. The curvature drift is similar with
+\begin{equation}
+  \label{eq:28}
+  \hat{\mathbf{v}}_\mathrm{curv} = \frac{m v_{\perp}^2}{r_{c}}\hat{r}_{c}
+\end{equation}
+
+\subsection{Adiabatic Invariance}
+
+In plasma physics adiabatic invariance is associated with some periodic motion
+that particles undergo. One kind of such motion is simply the gyration around $B$
+fields. Another kind of periodic motion is associated with the drifts, for
+example a particle bouncing in a magnetic bottle. We will now talk about this
+kind of motion in detail. This is similar to the Poincare invariant in
+kinematics $I = \oint \mathbf{p}\cdot d\mathbf{q}$.
+
+We wrote down the magnetic moment of the particle $\mu = mv_{\perp}^2/2B$. This
+is actually the first adiabatic invariant. If for example a particle is gyrating
+in a uniform $B$ field, and we very slowly decrease the magnetic field. We can
+see that the perpendicular velocity of the particle will adjust and decrease as
+well, so that this quantity is conserved. Another way to look at it is that
+magnetic flux in the Larmor orbit is conserved.
+
+One can show that $\mu$ is conserved to the precision of $e^{-\Omega/\omega}$
+where $\omega$ is the rate of change of the magnetic field. We call this
+conservation ``to all orders'' since it is exponential.
+
+Another conserved quantity is $J = \oint m v_{\parallel} d\ell_B$ where $\ell_B$
+is the path along $B$ and $v_{\parallel}$ is the guiding center motion parallel
+to the magnetic field. Consider a magnetic bottle. Since energy of the particle
+is conserved and also $\mu$ is conserved, so $v_{\parallel}^2$ will decrease in
+regions of large $B$, and particles will eventually reflect. In this kind of
+periodic mirroring motion, $J$ is conserved.
+
+\subsection{Anisotropy}
+
+If we look at the magnetic moment of a species of particles and take the
+expectation value
+\begin{equation}
+  \label{eq:29}
+  \left<\mu \right> = \frac{\int \mu f d^3V}{\int f d^3V} = \frac{\int \frac{1}{2}\frac{mv_{\perp}^2}{B}f d^3V}{n} = \frac{P_{\perp}}{nB} = \frac{T_{\perp}}{B}
+\end{equation}
+
+One can do the same thing with $J$:
+\begin{equation}
+  \label{eq:30}
+  \left\langle J^2 \right\rangle = \frac{\int m^2v_{\parallel}^2\ell_B^2 f d^3V}{\int f d^3V} = \frac{T_{\parallel}B^2}{n^2}
+\end{equation}
+where we choose $\ell = B/n$. These are the two most important quantities when
+one goes to weakly collisional systems. This means that if we adjust $B$ or $n$
+then the perpendicular/parallel motion of the particles will collectively
+adjust.
+
+In terms of a fluid we can write this in a nicer way
+\begin{equation}
+  \label{eq:31}
+  \frac{D}{Dt}\left( \frac{P_{\perp}}{nB} \right) \approx 0,\quad \frac{D}{Dt}\left( \frac{P_{\parallel}B^2}{n^3} \right) \approx 0
+\end{equation}
+These are called double adiabatic laws and replaces the equation of entropy. A
+nice paper discussing this is \href{http://rspa.royalsocietypublishing.org/content/236/1204/112}{(Chew, Goldberger, \& Low 1956)}. The total $P$ can
+be split such that $P = 2P_{\perp} / 3 + P_{\parallel} / 3$.
+
+We now want to introduce a right hand side to these equations. We take the
+difference of the equations we get
+\begin{equation}
+  \label{eq:32}
+  \left[ \frac{D}{Dt} + \frac{D(\ln B n^{-7/3})}{Dt} \right](P_{\perp} - P_{\parallel}) = 3P \frac{D\ln B n^{-2/3}}{Dt} + \text{heat flows} + \text{cooling/heating} - \nu(P_{\perp} - P_{\parallel})
+\end{equation}
+This is one version of the so-called CGL equations.
+
+One distribution function that exhibits this anisotropy is the ``bi-Maxwellian''
+distribution
+\begin{equation}
+  \label{eq:33}
+  \frac{f}{n} = \frac{e^{-v_{\perp}^2/v_{th\perp}^2} e^{-v_{\parallel}^2/v_{th\parallel}^2}}{\pi^{3/2}v_{th\perp}^2v_{th\parallel}}
+\end{equation}
+
+Consider the limit where the frequency of time changes $\omega \sim D/Dt \ll
+\nu_\mathrm{coll} \ll \Omega$. This limit is good for ICM, GC, etc. The entire
+left hand side of the above equation can be dropped, and the largest term is the
+$\nu$ term on the right.
+
+This limit is considered in \href{http://adsabs.harvard.edu/abs/1965RvPP....1..205B}{(Braginskii 1965)}. We can rewrite the equation as
+\begin{equation}
+  \label{eq:34}
+  P_{\perp} - P_{\parallel} = \frac{3P}{\nu}\frac{D \ln}{Dt}\frac{B}{n^{2/3}} = \frac{3P}{\nu}\left( \hat{b}\hat{b} - \frac{1}{3}\mathbf{I} \right):\nabla \mathbf{u}
+\end{equation}
+where $\mathbf{a}\mathbf{b}:\nabla \mathbf{c} = a_ib_j\partial c_j/\partial x_i$.
+
+Lets try to understand how this connects to our previous discussions. One way to
+include this anisotropy in our fluid equations is to promote $P$ to a tensor:
+\begin{equation}
+  \label{eq:35}
+  \mathbf{P} = P_{\perp}\left( \mathbf{I} - \hat{b}\hat{b} \right) + P_{\parallel}\hat{b}\hat{b}
+\end{equation}
+The equation can be closed because of our previous equation. This new pressure
+term introduces anisotropy viscosity. It is also called the ``Braginskii
+viscosity''.
+
+What this equation says is that there is viscosity, but the viscosity only acts
+along the magnetic field lines, because with the ordering it is incredibly
+difficult to communicate between the field lines due to particles restrained to
+gyrate around the field lines in very small orbits.
+
+This is already very different from MHD, where the only anisotropy is due to the
+Lorentz force. Now if there is heat flux in the system it is subject to the same
+constraint of flowing along the magnetic field:
+\begin{equation}
+  \label{eq:36}
+  \mathbf{Q} = -\chi \hat{b} \hat{b}\cdot\nabla T
+\end{equation}
+Notice the appearance of the tensor $\hat{b}\hat{b}$. This is called anisotropic
+conduction.
+
+\subsection{Collision Not Strong Enough}
+
+We picked up the first order correction to MHD which is pressure anisotropy. Let
+us now talk about when collision is not enough and we need to consider kinetics.
+However kinetics is a very deep subject because one doubles the dimensions of
+the problem by introducing distribution functions.
+
+The kinetic equation is a statistical description of the plasma. The problem
+about simulating a system of particles directly is that we have too many
+particles ($\sim 10^{28}$). Another problem is that it is very sensitive to
+initial conditions because particle trajectories are chaotic. The third problem
+is that we are not interested in the individual particles but only some
+collective quantities, so why trace them individually in the first place?
+
+We instead describe a large number of particles using their collective
+statistical properties which is their distribution in the phase space
+\begin{align}
+  \int f(t, \mathbf{x}, \mathbf{v})\,d^3v &= n \\
+  \int f \mathbf{v}\,d^3v &= n \mathbf{u} \\
+  \int f \frac{1}{2}m v_{\perp}^2\, d^{3}v &= P_{\perp}
+\end{align}
+
+The equation for the distribution function is
+\begin{equation}
+  \label{eq:37}
+  \frac{df}{dt} = \frac{\partial f}{\partial t} + \mathbf{v}\cdot\nabla f + \mathbf{a}\cdot \frac{\partial f}{\partial \mathbf{v}} = C[f]
+\end{equation}
+This is called the Vlasov equation where the right hand side is a functional
+describing the collisional terms. It has 3 spatial and 3 velocity dimensions, so
+solving it is very expensive. In addition this is coupled to Maxwell equations,
+which we need to solve simultaneously.
+
+This equation is extremely rich, even when doing linear theory. What happens if
+we don't want to solve this? We can remove some degrees of freedom, reduce
+dimensions, or find other approximations. One way is to find small parameters
+$\epsilon \ll 1$. One possible one is that $\epsilon \sim \omega/\Omega$,
+meaning the rate of change is small compared to gyro frequency. It could be
+$\epsilon \sim \rho/\ell$, $\epsilon \sim v/c$, etc. These are starting points
+of kinetic MHD, and gyrokinetics. The simple derivations of these are in the
+notes.
+
+In kinetic MHD, we have $\rho/\ell \sim \epsilon$ where $\ell$ is any scale in
+the problem. However in gyrokinetics we have $\rho/\rho_{\parallel}\sim
+\epsilon$ but $\rho/\rho_{\perp}\sim 1$. This is an important distinction
+between them.
+
+\subsection{Instabilities}
+
+We will briefly cover some instabilities. First one is the Firehose instability.
+It is basically Alfven waves when
+\begin{equation}
+  \label{eq:38}
+  P_{\parallel} > P_{\perp} + \frac{B^2}{4\pi}
+\end{equation}
+When this happens the magnetic field will develop wild oscillations.
+
+Another is the Mirror instability which is associated with the growth of slow
+modes. If we have a series of magnetic mirrors and if we squeeze the fields the
+particles will move away from that point. When
+\begin{equation}
+  \label{eq:39}
+  P_{\perp} > P_{\parallel} + \frac{B^2}{8\pi}
+\end{equation}
+the mirrors will grow and become unstable.
 
 
 
