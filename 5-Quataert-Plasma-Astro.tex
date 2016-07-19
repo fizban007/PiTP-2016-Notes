@@ -1,0 +1,329 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+\newcommand{\Jmath}{J}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{Selected Topics in Plasma Astrophysics}
+\author{Eliot Quataert}
+\date{July 19, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+\subsection{Astrophysical Plasmas in General}
+
+Plasma astrophysics is a very broad subject, encompassing a lot of different sub
+fields. There are a lot of different techniques to study them as well. For
+relativistic plasma physics, there are force-free electrodynamics to study e.g.\
+pulsar magnetospheres. There is a family of (GR)(M)HD that study accretion,
+jets, etc. There is PIC that is used to study shocks, and Dynamic space-time +
+MHD to study compact object mergers.
+
+For non-relativistic theory we use force-free for e.g.\ solar corona, MHD for
+e.g.\ star formation, disks, etc., and kinetic theory for shocks, reconnection,
+turbulence, etc. Even within MHD, there is a wide range of fluid models which
+are useful for different situations.
+
+In the first lecture we focus on fluid models with some kinetic elements.
+
+\subsection{Stellar Winds}
+
+Stellar winds is a topic that is rich and has influence over many other branches
+of plasma astrophysics, and it will be our topic today. We will be discussing
+different kinds of winds:
+\begin{itemize}
+    \item Thermally driven winds (from sun-like stars): hydrodynamic theory, kinetic
+  theory
+    \item Magnetocentrifugically driven winds: MHD, rotation as energy source
+      but trapped by $B$ fields.
+    \item Radiation pressure driven outflow: $L > L_\mathrm{edd}$: continuum
+      driven or line-driven, depending on the spectrum
+\end{itemize}
+
+\subsection{Solar Corona and Wind}
+
+Solar corona and outflow is an important part of solar dynamics. The solar
+outflow is very small in terms of mass and energy. However the solar wind is
+efficiently extracting the angular momentum from the sun. Its spin has slowed
+down by a factor of 30 to 50 since its birth. The time scale of $dJ/dt$ is on
+the order of $10^{10}$ years.
+
+The solar corona is not in thermal equilibrium. We know that $T_i \gg T_p \geq
+T_{e}$, and is anisotropic $T_{\perp}\geq T_{\parallel}$. The corona is mostly
+collisionless where $\ell_{mfp}\sim 10^{8}\rho_\mathrm{Larmor}$. It turns out
+that despite the collisionlessness we can use fluid theory to somewhat describe
+the solar wind.
+
+Lets start by talking about the Parker model. Consider a time-independent
+outflow, the continuity equation is
+\begin{equation}
+  \label{eq:1}
+  \nabla\cdot (\rho \mathbf{v}) = 0 \Longrightarrow r^2\rho v_r = \text{const}
+\end{equation}
+From this the mass loss rate is simply $\dot{M} = 4\pi r^2\rho v_r$ which is
+also a constant. The radial velocity equation reads
+\begin{equation}
+  \label{eq:2}
+  v\frac{dv}{dr} = -\frac{1}{\rho}\frac{dP}{dr} - \frac{GM}{r^2}
+\end{equation}
+If we assume temperature being constant, pressure $P = \rho c_s^2 = \rho
+kT/m_p$, then we have this equation
+\begin{equation}
+  \label{eq:3}
+  \frac{1}{v_r}\frac{dv_r}{dr}(v_r^2 - c_s^2) = \frac{2c_s^2}{r} - \frac{GM}{r^2}
+\end{equation}
+This equation describes spherical wind, or spherically symmetric (Bondi)
+accretion.
+
+There is a special point in this equation called the sonic point. This is where
+$v_r = c_s$. This requires that the right hand side is also zero
+\begin{equation}
+  \label{eq:4}
+  \frac{2c_s^2}{r} = \frac{GM}{r^2}
+\end{equation}
+
+In the regime where $v < c_s$, we can ignore the left hand side of equation
+\eqref{eq:3}. This gives a spatial distribution of density. However when this is
+true, the pressure is very big. In fact if we require that the flow goes through
+the sonic point peacefully, we can uniquely obtain a unique outflow solution
+from this equation. TODO: clean this paragraph up
+
+\subsection{Magnetic Field}
+
+Around the sun there are magnetic field lines that open up to infinity, and
+field lines that close back to the star itself. For a non-rotating star, the
+above theory can be thought of as describing the acceleration of the outflow
+along the open magnetic field lines. The only non-trivial thing is the structure
+of the global magnetic field.
+
+However now let's consider when the star is rotating. Lets simplify the actual
+magnetic field to a split monopole configuration, which can be called a
+``theorist's monopole''. This is a useful toy model where we can calculate
+structures of the outflow relatively easily. If we have a very powerful outflow
+that blows up the magnetic field lines, then at large distances it will actually
+look like a split monopole field.
+
+We will now focus on the equatorial plane. Imagine the magnetic field lines have
+infinite tension. The outflow will rigidly follow the field lines, and forced to
+corotate with the star. As they flow out their rotation velocity will increase
+with radius, as well as their specific angular momentum. Therefore they extract
+angular momentum from the star. The magnetic field acts as a medium that
+extracts angular momentum from the star and transfer it to the outflow.
+
+The corotation only can keep up till some point, where the magnetic energy
+becomes comparable to the kinetic energy of the material
+\begin{equation}
+  \label{eq:5}
+  \frac{B^2}{8\pi} \sim \rho v_r^2
+\end{equation}
+At this point there is so much energy in the gas that you can't treat the
+magnetic field as rigid. This is called the \emph{Alfven point} $r_A$. This is also
+when
+\begin{equation}
+  \label{eq:6}
+  v_r = v_A \sim \frac{B}{\sqrt{4\pi\rho}}
+\end{equation}
+
+Lets look at this outflow in more detail. Let
+\begin{equation}
+  \label{eq:7}
+  \mathbf{v} = v_r\hat{r} + v_{\phi}\hat{\phi},\quad \mathbf{B} = B_r\hat{r} + B_{\phi}\hat{\phi}
+\end{equation}
+We want to use the conservation of momentum and energy again like before to
+write down the equation governing the outflow. We have
+\begin{align}
+  \dot{M} = 4\pi r^2 \rho v_r = \text{const}, \quad \frac{\partial \mathbf{B}}{\partial t} = \nabla\times(\nabla \times \mathbf{B}) = 0
+\end{align}
+We can show that
+\begin{equation}
+  \label{eq:8}
+  \frac{B_{\phi}}{B_{r}} = \frac{v_{\phi} - r\Omega}{v_r}
+\end{equation}
+The way to think about this result is that, if there is perfect corotation, then
+there is no $B_{\phi}$. If $v_{\phi}$ can't keep up with $r\Omega$ the magnetic
+field will start to lag behind and be swept back, leading to a negative
+component of $B_{\phi}$.
+
+The next equation which is important is the momentum equation in the $\phi$
+direction. It tells us how does angular momentum change
+\begin{equation}
+  \label{eq:9}
+  \rho v_r\frac{d}{dr}(rv_{\phi}) = \frac{B_r}{4\pi}\frac{d}{dr}(rB_\phi)
+\end{equation}
+If we multiply by $r^2$ we can easily integrate this equation, giving
+\begin{equation}
+  \label{eq:10}
+  L = rv_{\phi} - \frac{rB_{\phi}B_r}{4\pi\rho v_r} = \text{const}
+\end{equation}
+There are two contributions to the angular momentum: $L_\mathrm{gas}$ and
+$L_\mathrm{mag}$. Therefore the angular momentum is carried out both by the gas
+and the magnetic field, and the total angular momentum is a constant in the
+problem.
+
+To find what the constant is, we can substitute equation \eqref{eq:8} into this
+equation and solve:
+\begin{equation}
+  \label{eq:11}
+  v_{\phi} = r\Omega \left( \frac{v_r^2L/r^2\Omega - v_{Ar}^2}{v_r^2 - V_{Ar}} \right)
+\end{equation}
+where $v_{Ar}^2 = B_r^2/4\pi\rho$. This has the same structure as before: the
+denominator is zero at some point. Here is apparent that the magnetic field
+component that determines the Alfven point is the radial point. Therefore at the
+Alfven point we have
+\begin{equation}
+  \label{eq:12}
+  L = r_A^2\Omega
+\end{equation}
+This means that the wind solution determines exactly how much angular momentum
+is extracted from the star. This idea is also why the outflow model is so
+important in plasma astrophysics. Because the magnetic field can be very strong,
+we could have $r_A \gg R_{*}$. The rate of angular momentum loss is
+\begin{equation}
+  \label{eq:13}
+  \dot{\Jmath} = \dot{M} L = \dot{M}r_A^2\Omega
+\end{equation}
+so the time scale is
+\begin{equation}
+  \label{eq:14}
+  t = \frac{J}{\dot{\Jmath}} \sim \frac{MR_*^2}{\dot{M}r_{A}^2}
+\end{equation}
+Due to the large ``level arm'' of the Alfven radius, this time scale can be much
+smaller than the time scale of mass loss. This efficient extraction of angular
+momentum due to magnetic field will occur in other places in plasma astrophysics
+as well.
+
+The last thing we want to talk about is the energy carried by the outflow.
+Consider hydrodynamics, we have the Bernoulli constant which is essentially
+energy per unit mass:
+\begin{equation}
+  \label{eq:15}
+  B_l = \frac{1}{2}v^2 + \phi + h,\quad h = \frac{5}{2}\frac{kT}{m_p}
+\end{equation}
+where $h$ is called the enthalpy $h = \gamma/(\gamma - 1) kT/m$. In thermally
+driven wind, if we heat up the gas it will be able to escape. However in MHD we
+have an additional loss of energy in the form of Poynting flux, which also taps
+into the rotational energy of the star. We find that
+\begin{equation}
+  \label{eq:16}
+  B_l + \frac{S_r}{\rho v_r} = \text{const}
+\end{equation}
+where $S_r$ is the radial Poynting flux. Given the magnetic field structure it
+is easy to calculate the Poynting flux
+\begin{equation}
+  \label{eq:17}
+  \frac{S_r}{\rho v_{r}} = -\frac{r\Omega B_rB_{\phi}}{4\pi \rho v_{r}}
+\end{equation}
+If we call this constant $\epsilon$, then it is like the angular momentum flux,
+it has a gas component and also a magnetic field component, where in fact
+$\epsilon_\mathrm{mag} = \Omega L_\mathrm{mag}$.
+
+Now the question is which of these is more important. Lets roughly estimate it
+to get a feeling:
+\begin{equation}
+  \label{eq:18}
+  \epsilon_\mathrm{gas} \sim \frac{kT_\mathrm{corona}}{m_p},\quad \epsilon_\mathrm{mag} \sim r_A^2\Omega^2
+\end{equation}
+For the sun, the gas energy flux is much larger than the magnetic energy flux,
+and most of the energy outflow is thermal energy. This is a thermally driven
+wind. In the other regime most of the energy that goes to infinity is the
+rotational energy of the central object. This is what we call a
+magnetically driven outflow. Which regime we have depends no the
+temperature of the corona, rate of rotation, and Alfven radius.
+
+Lets come back to the question is why do we use a fluid model at all for the
+sun. The sun is a slowly rotating object. Around the sun the presence of
+magnetic field means $\rho_\mathrm{Larmor} \ll R$, so plasma streams only in one
+direction. Along the $B$ field pressure is the origin of acceleration, but fluid
+theory is okay within order of about a few. Kinetic instabilities also helps us
+by limiting how much our distribution function can deviate from Maxwellian.
+
+The state of the art of solar corona study is to understand how particles are
+heated in the solar corona. This heating has been measured from the corona all
+the way to much further away from the Earth. The temperature profile is
+shallower than adiabatic, so there must be heating going on. One idea is that
+Alfven waves are launched and the turbulence keep heating the plasma.
+
+The time-reversal of this outflow wind model is the spherical Bondi accretion.
+There is also the theory of magnetically directed accretion to the central object
+analogous to the magnetically driven wind models. But it works not as good
+because in the wind model the outflow is driven by the rotation of the star, and
+same can't be said for accretion models.
+
+\subsection{Radiative Driven Winds}
+
+Lets now briefly talk about radiation pressure driven winds. Around RGB and AGB
+stars, a lot of dust forms in stellar atmosphere which have high $\kappa$. They
+feel the radiation pressure much higher than the gas but are coupled to the gas
+through collision, therefore driving a wind. Around massive stars $L >
+L_\mathrm{edd}$ on metal lines, and the plasma absorption of metal line photons
+drives the wind.
+
+In thermally driven winds the energy outflow is $\dot{M}$ times the speed of
+sound squared. However for the radiation pressure driven winds we should think
+of momentum flux due to photons
+\begin{equation}
+  \label{eq:19}
+  \dot{P} \sim \dot{M}v_{\infty} \sim L/c,\quad v_{\infty} \sim v_\mathrm{escape}
+\end{equation}
+We can derive this from the momentum equation directly
+\begin{equation}
+  \label{eq:20}
+  v\frac{dv}{dr} = -\frac{1}{\rho}\frac{dP}{dr} - \frac{GM}{r^2} + \kappa \frac{F}{c}
+\end{equation}
+where the right hand side has a new term which is an average radiation pressure
+force over all wavelengths. If we only focus on the new term, we can write
+\begin{equation}
+  \label{eq:21}
+  v\frac{dv}{dr} = \frac{\kappa L}{4\pi r^2 c}
+\end{equation}
+Multiplying both sides by $4\pi r^{2}\rho$ we have
+\begin{equation}
+  \label{eq:22}
+  \dot{M}\frac{dv}{dr} = \rho\kappa\frac{L}{c}
+\end{equation}
+Integrating this over all radii to infinity we now have
+\begin{equation}
+  \label{eq:23}
+  \dot{M}v_{\infty} = \tau\frac{L}{c}
+\end{equation}
+where $\tau$ is the optical depth $\tau = \int \rho\kappa\,dr$. That is exactly
+we have, and the optical depth is the one uncertain numerical coefficient.
+
+For line-driven winds refer to (Lucy \& Solomon 1970; Castor, Abott, Klein 1975).
+
+For applications of this wind theory in other models/fields, refer to the
+original slides! Mentioned models are thermally driven galactic winds, line
+driven winds from accreting black holes, magnetized winds from accretion disks.
+
+\section{Lecture 2}
+
+\subsection{Instabilities in Fluids and Plasmas}
+
+
+\end{document}
