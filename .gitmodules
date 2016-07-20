@@ -1,0 +1,6 @@
+[submodule "d3-hello-chart"]
+	path = d3-hello-chart
+	url = git@github.com:mericson/d3-hello-chart.git
+[submodule "pitp2016"]
+	path = pitp2016
+	url = git@github.com:teuben/pitp2016.git
