@@ -1,0 +1,357 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{GR meets astrophysics}
+\author{Luis Lehner}
+\date{July 20, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+We want to make connection between GR and the plasma astrophysics. Why do we
+need this when we have gravitational waves now? There are a lot of limitations
+of gravitational waves. It is limited due to characteristics of signals and
+detectors. At higher frequency noise grows linearly, and sky location is very
+poor. Strong gravity effects in astrophysics are all tied to some
+analytical models, and are limited in scope. We also are interested in the EM
+connections to the gravitational wave signals.
+
+Therefore we want to study mergers of compact objects within surrounding plasma.
+Two binary non-rotating black holes disturbs the spacetime enough that it
+launches jets from the surrounding plasma and allow the plasma to tap into the
+kinetic energy of the rotation.
+
+We will be talking about the challenges and problems simulating and controlling
+dynamic space time. Let's go slowly from the beautiful theory of Einstein and
+put it into the computer to compute it dynamically.
+
+We start with the theorem by Hadamard: any problem about a physical system
+should be well posed. By well posed (WP), we mean:
+\begin{itemize}
+\item Solution exists
+    \item The solution to the problem is unique
+    \item The solution must depend continuously on initial and boundary data
+\end{itemize}
+By the last statement we mean that the magnitude of solution in a general sense
+should
+\begin{equation}
+  \label{eq:1}
+  \left| u \right|_T \leq \left| u \right|_{t = 0} K e^{\beta T}
+\end{equation}
+where $K$ and $\beta$ should not depend on initial or boundary data. If any
+problem we are solving does not satisfy any of the statements we should throw it
+away immediately.
+
+Lets talk about the sufficient and necessary conditions for WPness. If we can
+pose the problem in this form
+\begin{equation}
+  \label{eq:2}
+  u_{,t} = \sum A^i\partial_iu + \text{``Rest''}
+\end{equation}
+then the sufficient condition is that the matrix $A$ is diagonalizable, and the
+eigenvalues are real.
+
+A simple example is $u_{,tt} = u_{,xx}$. If we define $f = u_{,x}$ and $g =
+u_{,t}$ then we can define the dynamic variables as $u, f, g$ and it satisfy the
+sufficient condition.
+
+Consider now this system
+\begin{equation}
+  \label{eq:3}
+  u_{,t} = u_{,x} + v_{,x},\quad v_{,t} = u_{,x}
+\end{equation}
+This system has $A$ in a Jordan block form. It turns out that this system admits
+the solution in the form of
+\begin{equation}
+  \label{eq:4}
+  u = DF_1(t + x)\cdot t + F_2(t + x),\quad v = F_1(t + x)
+\end{equation}
+the first part of $u$ grows linearly with time. This is called a weakly
+hyperbolic system, and we now care about the ``Rest'' of the problem. If we
+couple this, and add $u$ to $v_{,t}$, then the solution of $v$ becomes
+\begin{equation}
+  \label{eq:5}
+  v = c_1e^{c_1(t+x)} + c_2e^{t\sqrt{c_2}}
+\end{equation}
+and this solution is exponentially unstable to changes to initial condition,
+which is a badly posed problem. We especially want to avoid this in a numerical
+system because the initial conditions are never exact.
+
+How do we make sure our complex problem is well posed when such a simple one can
+be bad? Lets consider the Einstein equation
+\begin{equation}
+  \label{eq:6}
+  G_{ab} = 8\pi T_{ab}
+\end{equation}
+The left hand side part has form of $\partial^{2}g$, whereas the right hand side
+depends on the fluid quantities $\mathcal{F}$ and $g$. We also have the
+constraint equation of the fluid $\nabla_aT^{ab} = 0$, which concerns $\partial
+\mathcal{F}$ and $\partial g$. For our purposes they are decoupled, so we are
+allowed to treat $T_{ab}$ as the ``Rest''.
+
+Lets say some words about gravity quickly. We have the metric tensor which
+describes the spacetime manifold $g_{ab}$. This determines a length
+\begin{equation}
+  \label{eq:7}
+  ds^2 = g_{ab}dx^adx^{b}
+\end{equation}
+Note that we use Einstein summation notation to add the indices $a$ and $b$.
+Both indices take values $0, 1, 2, 3$ where $0$ is for time part and others are
+for spatial part.
+
+If we have a curved manifold, when we take derivatives we need to take into
+account the change of manifold in addition to the change of the field. We define
+the covariant derivative $\nabla_{a}$ which does exactly that. We have by definition
+\begin{equation}
+  \label{eq:8}
+  \nabla_ag_{bc} = 0
+\end{equation}
+The covariant derivative of a vector is defined as
+\begin{equation}
+  \label{eq:9}
+  \nabla_av^b = \partial_av^{b} + \tensor{\Gamma}{^{b}_{ac}}v^{c}
+\end{equation}
+Some other definitions are
+\begin{equation}
+  \label{eq:10}
+  \nabla_a f = \partial_{a}f,\quad \nabla_av_{b} = \partial_av_{b} - \tensor{\Gamma}{^{c}_{ab}}v_{c}
+\end{equation}
+
+Now we need to define what the $\Gamma$ symbol is. It is called the Chrsitoffel
+symbol
+\begin{equation}
+  \label{eq:11}
+  \tensor{\Gamma}{^{a}_{bc}} = \frac{1}{2}g^{ae}(g_{be,c} + g_{ce,b} - g_{bc,e})
+\end{equation}
+Now we can define the so-called Riemann curvature tensor:
+\begin{equation}
+  \label{eq:12}
+  \tensor{R}{^a_{bcd}} = \partial_{c}\tensor{\Gamma}{^a_{bd}} - \partial_{d}\tensor{\Gamma}{^a_{bc}} + \tensor{\Gamma}{^{e}_{bd}}\tensor{\Gamma}{^{a}_{ec}} - \tensor{\Gamma}{^{e}_{bc}}\tensor{\Gamma}{^{a}_{ed}}
+\end{equation}
+This curvature tensor describes the curvedness of the spacetime manifold.
+
+If we have two world lines along the manifold, and the acceleration between them
+can be characterized by the Riemann tensor
+\begin{equation}
+  \label{eq:13}
+  a^a = -\tensor{R}{^{a}_{cbd}}\xi^{c}\xi^dL^{b}
+\end{equation}
+where $\xi^{c} = dx^{c}/d\lambda$ $L^{b}$ is the distance between the world
+line. A funny fact about the curved manifold is that derivatives depend on
+paths, and the order of taking them, and the Riemann tensor characterizes this:
+\begin{equation}
+  \label{eq:14}
+  \left[ \nabla_{b}\nabla_{c} - \nabla_{c}\nabla_{b} \right] v_{a} = \tensor{R}{^{d}_{abc}}v_{d}
+\end{equation}
+We finally define the Einstein tensor
+\begin{equation}
+  \label{eq:15}
+  G_{ab} = R_{ab} - \frac{1}{2}g_{ab}R,\quad R_{ab} = \tensor{R}{^{d}_{adb}},\quad R = g^{ab}R_{ab}
+\end{equation}
+
+Now lets get into how to solve these equations in the computer. In a sense our
+problem is ill formed from the get go because everything depends on our choice
+of coordinates. So we need to find a formulation.
+
+The one we introduce now is called the ADM formulation. Given a spacetime we can
+foliate it with space-like slices $\Sigma_{t_i}$. A way to understand space-like
+hypersurfaces is that its norm at any place $n^{a}$ is time-like: $n_an^a = -1$.
+Here we implicitly choose our signature to be $(-1, 1, 1, 1)$ so that the
+Minkowski spacetime is $ds^2 = -dt^2 + dx^2 + dy^2 + dz^2$. Time-like vectors
+are inside the lightcone and space-like vectors are outside.
+
+We can now label these hypersurfaces with $t$ equal to constant. Because the
+hypersurfaces have constant $t$, we can define $n_{a} = \nabla_at
+= \partial_at$. If we go from the hypersurface of $t_{1}$ to the next
+hypersurface of $t_2$. For a typical observer, he will not measure really time
+$t_2 - t_1$, but some time proportional to that:
+\begin{equation}
+  \label{eq:16}
+  \tau = \alpha(t_2 - t_1)
+\end{equation}
+where $\alpha$ is called the lapse function. The vector that points from a point
+$(t_1, x, y, z)$ to a point $(t_2, x, y, z)$ is what we call $\partial_{t}$.
+However this may not coincide with the vector $n_{a}$ we defined above, so we
+define a new vector
+\begin{equation}
+  \label{eq:17}
+  \beta^a = \partial_t^a - n^a
+\end{equation}
+which is called the shift vector.
+
+Now we can split up the metric tensor
+\begin{equation}
+  \label{eq:18}
+  ds^2 = -\alpha^2dt^2 + h_{ij}\left( dx^i + \beta^idt \right)(dx^j + \beta^jdt)
+\end{equation}
+where $h_{ij}$ will be the metric on the hypersurface.
+
+We can find the relationship between the metric tensor of the individual
+hypersurfaces and the full metric:
+\begin{equation}
+  \label{eq:19}
+  h_{ab} = g_{ab} + n_an_{b}
+\end{equation}
+This metric has several properties:
+\begin{itemize}
+\item $\tensor{h}{_a^{b}}\tensor{h}{_{b}^{c}} = \tensor{h}{_{a}^{c}}$
+    \item $h_{ab}n^a = 0$
+    \item $h_{ab}S^{b} = S_{a}$
+\end{itemize}
+where $S^{b}$ is a spacelike vector. So $h_{ab}$ is like a projection operator
+onto the hypersurface.
+
+We need one more concept so that we can foliate the spacetime. This is the
+so-called extrinsic curvature
+\begin{equation}
+  \label{eq:20}
+  K_{ab} = -\perp \perp \nabla_{a}n_{b} = -\tensor{h}{_{a}^{\alpha}}\tensor{h}{_{b}^{\beta}}\nabla_{\alpha}n_{\beta}
+\end{equation}
+This is a useful quantity to measure the rate of change of the hypersurface when
+embedded into the whole manifold as one goes with the flow. It can be shown that
+\begin{equation}
+  \label{eq:21}
+  \partial_t h_{ab} = -2\alpha K_{ab} + \beta^l\partial_lh_{ab} + h_{al}\partial_{b}\beta^{l} + h_{bl}\partial_{a}\beta^{l}
+\end{equation}
+
+Now we are equiped to look at numerical relativity. One takes the Einstein
+equations and take different projections. If we take a vector and dot it
+$v^{a}n_{a} = v_{n}$ to get the component along the direction of $n$. We can
+also dot it with $h$ to get its projection to the hypersurface. If we dot the
+Einstein equation with $n^an^{b}$ then we get
+\begin{equation}
+  \label{eq:22}
+  \tensor[^{(3)}]{R}{} + K^{2} - K_{ij}K^{ij} = 16\pi\rho
+\end{equation}
+Here $\rho$ is the energy density that is measured by the observers that are
+moving normal to the spatial hypersurface, $\rho = T_{ab}n^{a}n^{b}$.
+$\tensor[^{(3)}]{R}{}$ is the intrinsic curvature of the hypersurface.
+
+We can also imagine dotting the Einstein equation with
+$n_{a}\tensor{h}{_{c}^{b}}$:
+\begin{equation}
+  \label{eq:23}
+  D_{b}(K^{ab} - h^{ab}K) = 8\pi J^{a}
+\end{equation}
+where $D$ is the intrinsic covariant derivative along the hyper surface
+$D_{b}h_{ac} = 0$. Again $J$ is the momentum measured by the same observers.
+
+These two equations have no time derivatives and are called constraint
+equations. We have one final projection by $\perp\perp$
+\begin{equation}
+  \label{eq:24}
+  \begin{split}
+    \partial_tK_{ab} &= \beta^l\partial_lK_{ab} + K_{al}\partial_{b}\beta^l + K_{bl}\partial_a\beta^{l} \\
+    &- D_{a}D_{b}\alpha + \alpha \left[ \tensor[^{(3)}]{R}{_{ab}} + K K_{ab} - 2K_{ad}\tensor{K}{^d_{b}} - 8\pi \left( S_{ab} - \frac{h_{ab}}{2}(S - \rho) \right) \right]
+  \end{split}
+\end{equation}
+We also have
+\begin{equation}
+  \label{eq:25}
+  \partial_th_{ab} = \beta^l\partial_lh_{ab} + h_{al}\partial_{b}\beta^{l} + h_{bl}\partial_{a}\beta^{l} - 2\alpha K_{ab}
+\end{equation}
+From these we know that the spatial curvatures have second order time
+derivatives, which makes it into a hyperbolic system, but the rest unfortunately
+turns the system into weakly hyperbolic.
+
+There is a whole bunch of choices of $\alpha$ and $\beta$, but lets first
+discuss the problem that this system is weakly hyperbolic. Lets take a step back
+and write down $R_{ab}$. Notice that taking the trace of the Einstein equation
+gives $R = -T$. So we can write 
+\begin{equation}
+  \label{eq:27}
+  R_{ab} = T_{ab} - \frac{1}{2}g_{ab}T
+\end{equation}
+
+The Ricci tensor has a very provocative form
+\begin{equation}
+  \label{eq:28}
+  R_{ab} \longrightarrow g^{cd}g_{ab,cd} - 2\nabla_{(a}\Gamma_{b)} + \Gamma\Gamma + \partial g \partial g + \dots
+\end{equation}
+Since we are interested in the hyperbolic part, the first term is perfect
+which is like the wave equation, but the second term is nasty. Due to human
+nature we want to throw away things we don't like, so lets try to choose
+$\alpha$ and $\beta$ such that $\Gamma_{b} = 0$ then the second term is zero.
+Does this do the job?
+
+Suppose we have the equation
+\begin{equation}
+  \label{eq:29}
+  \Box \phi = \sum A \partial_{J}\phi \partial_R\phi
+\end{equation}
+which is actually what happens with the above equation for $R_{ab}$ and it turns
+out it has nice properties. Another problem people found is that $\Gamma_{b} =
+0$ gives $\nabla_a\nabla^{a}x^{b} = 0$ which means coordinates fly away at speed
+of light.
+
+Now do we need to give up our coordinates to solve the problem? What we do is
+to put a source $\Gamma_{b} = H_{b}$, so that $-\nabla_{a}\nabla^{a}x^{b} =
+H^{b}$. However now $H_{b}$ shows up in the equation, but if we have a
+hyperbolic system for $H$ where $\nabla_a\nabla^{a}H_{b} = \text{"something"}$
+then we can close the system.
+
+The remaining challenge is to satisfy the constraints, since a small departure
+from the constraint due to numerics then we might go completely away from the
+solution. Therefore we need to find a way to bring the solution back to the
+constraint hypersurface when things go wrong.
+
+Imagine at some point we choose the coordinates as discussed above, and there is
+a deviation $C^{a} = H^{a} + \Gamma^{a}$, then our system becomes
+\begin{equation}
+  \label{eq:30}
+  R_{ab} - \nabla_{(a}C_{b)} = 0
+\end{equation}
+we can substitute the constraint equation $\nabla^{b}G_{ab} = 0$ into the above
+equation we get
+\begin{equation}
+  \label{eq:31}
+  0 = \nabla^{a}\nabla_{a}C_{b} + C^{a}\nabla_{(b}C_{a)}
+\end{equation}
+so we have a wave equation for $C$. In theory if we start from zero then it will
+remain zero. But in reality we do see problems.
+
+Consider instead
+\begin{equation}
+  \label{eq:31}
+  0 = \nabla^{a}\nabla_{a}C_{b} + C^{a}\nabla_{(b}C_{a)} + \gamma_0 \left[ t_{(a}C_{b)} - \frac{1}{2}g_{ab}t^{c}C_{c} \right]
+\end{equation}
+where $\gamma^0$ is a numerical parameter and $t$ a timelike vector field. If we
+do the same thing as above we have now
+\begin{equation}
+  \label{eq:32}
+  0 = \nabla^{a}\nabla_{a}C_{b} - 2\gamma_{0}\nabla^{a}\left[ t_{(a}C_{b)} \right]
+\end{equation}
+This is now a damped wave equation and will damp away deviation from the
+constraint on a time scale determined by $\gamma_{0}$.
+
+
+
+
+\end{document}
