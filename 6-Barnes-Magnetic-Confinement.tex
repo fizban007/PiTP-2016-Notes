@@ -1,0 +1,311 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{\#MCF: The Physics of Magnetic Confinement}
+\author{Michael Barnes}
+\date{July 20, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+We are going to talk about magnetic confinement in fusion. This is our only talk
+which is not on Astrophysics in this school, so lets start by talking about how
+this differ from astrophysical plasmas. The first difference is that, for the
+sun as an example, it has a great mass and the gravitational force can provide
+confinement for the plasma. However for controlled fusion we don't have such
+luxury, and we need magnetic or hydro means to confine the plasma.
+
+The way we do fusion is to heat up hydrogen to the extent such that at the tail
+of the distribution the atoms have just enough energy to tunnel through the Coulomb
+barrier to undergo fusion. Therefore our goal is to confine hot plasma. We use a
+toroidal structure and try to achieve an equilibrium state, which we will talk
+about subsequently.
+
+We are not going to talk too much about how to heat up the plasma. In a short
+sentence we just put current into the plasma and due to resistivity it will heat
+up.
+
+\subsection{Single Particle Confinement}
+
+The basic concept of magnetic confinement is simple. With magnetic field
+particles will stream along the magnetic field lines while gyrating at radius
+\begin{equation}
+  \label{eq:1}
+  \rho = v_{\perp}\Omega \propto v_\mathrm{th}/B \sim \sqrt{\beta}
+\end{equation}
+However this only works with 2 dimensions and particles can still stream along
+the field line.
+
+One idea to overcome this is to use a magnetic mirror, briefly covered in Matt
+Kunz's lecture. This is what happens in Van Allen radiation belt around Earth.
+Since magnetic moment is an adiabatic invariant in slowly changing inhomogeneous
+magnetic field, particles will bounce off regions with higher magnetic field.
+Since energy is conserved
+\begin{equation}
+  \label{eq:2}
+  \frac{m v_{\parallel}^2}{2} = E - \mu B
+\end{equation}
+therefore at bounce point $E = \mu B_\mathrm{max}$. However this method of
+confinement can lose a lot of plasma when it is hot.
+
+Another solution is to use the field line topology to confine the plasma. The
+``Hairy ball theorem'' tells that the only topology with confined trajectories
+is a torus. Once we confine ourselves to torus, there are three possibilities:
+closed lines, surfaces, or toroidal annuli. The third idea is not very appealing
+especially when there are many particles, since particles on different field
+lines will interact.
+
+If we have a circular magnetic field in a plane, particles gyrating in the
+magnetic field will drift vertically due to grad-B drift. If we put $E$ field to
+prevent this movement, the particles will drift outwards due to E cross B drift.
+So it does not work.
+
+The solution is to twist the magnetic field by introducing poloidal
+$B_{\theta}$. This is the Tokamak. We can use a toroidal coil to provide the
+toroidal magnetic field and use a coil inside and outside to make poloidal
+magnetic field. In this kind of configuration, if the particles sample the
+entire toroidal surface, then there is no net drift.
+
+However there is a complication. The field strength changes over the particle
+trajectory and some particles might get trapped. At this point lets introduce
+some quantities
+\begin{equation}
+  \label{eq:4}
+  \psi_p = \oint \mathbf{B}\cdot d\mathbf{a}^{\theta},\quad \psi_t = \oint \mathbf{B}\cdot d\mathbf{a}^{\zeta}
+\end{equation}
+where $\zeta$ labels the coordinate along the torus long direction, and $\theta$
+labels the short direction (orthorgonal).
+
+
+
+\subsection{Magnetic Topology}
+
+Tamm's Theorem states that no average radial drift in axisymmetric torus. If the
+confining field is axisymmetric, the canonical angular momentum is conserved
+\begin{equation}
+  \label{eq:5}
+  p_{\zeta} = Rmv_{\zeta} + \frac{ZeRA_{\zeta}}{c} = \mathrm{const}
+\end{equation}
+Trapped particles in an axisymmetric torus will close in their orbits and
+precess along the field lines. 
+
+There are other symmetries that also prevent average radial drift. Lets consider
+\begin{equation}
+  \label{eq:6}
+\psi_{*} = \psi_p - \frac{I(\psi_p)v_{\parallel}}{\Omega}
+\end{equation}
+where $I\sim B/R$ is small. We want to argue that
+\begin{equation}
+  \label{eq:7}
+  \frac{d\psi_{*}}{dt} = \frac{2v_{\parallel}^2 + v_{\perp}^2}{\Omega B^2}\left( \mathbf{B}\times\nabla\psi_p\cdot\nabla B - I\mathbf{B}\cdot\nabla B \right)
+\end{equation}
+
+To summarize, the magnetic field topology will be
+\begin{equation}
+  \label{eq:8}
+  2\pi \mathbf{B} = \nabla \psi_t \times \nabla \vartheta + \nabla\zeta\times\nabla\psi_p(\psi_t, \vartheta, \zeta)
+\end{equation}
+The trajectory of the field line is given by
+\begin{equation}
+  \label{eq:9}
+\frac{dx^i}{d\tau} = \mathbf{B}\cdot\nabla x^i = B^i
+\end{equation}
+We want to choose $\zeta$ as time-like cooordinate:
+\begin{equation}
+  \label{eq:10}
+  \frac{d\psi_t}{d\zeta} = -\frac{\partial\psi_p}{\partial\vartheta},\quad \frac{d\vartheta}{d\zeta} = \frac{\partial\psi_p}{\partial\psi_t} = 1/q
+\end{equation}
+which is the pitch of the magnetic field.
+
+These two equations can be identified as Hamilton equations of this system where
+\begin{equation}
+  \label{eq:11}
+  \psi_p \leftrightarrow H,\quad \zeta\leftrightarrow t
+\end{equation}
+where $\theta$ and $\psi_t$ are position and momentum. This Hamiltonian system
+has one degree of freedom which allows 1D trajectories that are closed lines,
+and 2D trajectories that wraps around the torus.
+
+Now we have two possibilities, tokamaks and stellarators. Both are topologically
+tori, but Tokamaks are easier to construct with confined drift orbits. However
+in stellarators the confining poloidal field is generated externally and it is
+harder to confine the orbits. But this system has more flexibility in shaping.
+
+\subsection{Plasma Equilibrium}
+
+The force on the plasma is
+\begin{equation}
+  \label{eq:12}
+  \frac{\partial (m_sn_s\mathbf{u}_s}{\partial t} + \nabla\cdot \mathbf{P}_{s} - e_sn_s \left( \mathbf{E} + \frac{\mathbf{u}_s\times \mathbf{B}}{c} \right) = \mathbf{F}_s
+\end{equation}
+Since we want to find equilibrium without external forces, both the first term
+on lhs and the rhs are zero. Poisson's equation tells us that
+\begin{equation}
+  \label{eq:13}
+  \nabla^2\Phi = -4\pi\sum_se_sn_s,\quad \sum_se_sn_s\sim en_{e}\left( \frac{\lambda_D}{L} \right)^2
+\end{equation}
+As long as the plasma is quasineutral, with density variation much smaller than
+the length scale of the system, then the static electric field can be neglected.
+Near thermal equilibrium we have $\nabla\cdot \mathbf{P}_s = \nabla p_s$. So we
+have after summing over all species
+\begin{equation}
+  \label{eq:14}
+  c\nabla p = \mathbf{J}\times \mathbf{B}
+\end{equation}
+What this does tell us is that in a collisionless limit particles propagate
+parallel to the field lines, and in the collisional limit we have sound waves
+across the field lines.
+
+Another consequence of quasineutrality is $\nabla\cdot \mathbf{J} = -\partial
+\rho / \partial t$, so
+\begin{equation}
+  \label{eq:15}
+  \nabla\cdot \mathbf{J} \sim \frac{\rho}{\tau} \sim \frac{J}{L}\left( \frac{v_{th,e}^2}{c} \right)^2\frac{1}{\Omega_{e}\tau} \ll \frac{J}{L}
+\end{equation}
+Therefore mainly $\mathbf{J}_\perp$ enters the equation before. This means there
+has to be some parallel current $\nabla\cdot J_{\parallel} \neq 0$.
+
+There is an alternative physical interpretation. Lets define the curvature
+\begin{equation}
+  \label{eq:16}
+  \kappa = \mathbf{b}\cdot\nabla \mathbf{b} = \frac{4\pi}{c}\frac{\mathbf{J}\times \mathbf{B}}{B^2} + \frac{\nabla_{\perp}B}{B}
+\end{equation}
+If we use this to replace the J cross B term we have
+\begin{equation}
+  \label{eq:17}
+  \frac{B^2}{4\pi}\kappa = \nabla_{\perp} \left( p + \frac{B^2}{4\pi} \right)
+\end{equation}
+This means if we want to stretch field lines it has some tension to oppose that,
+and it balances plasma pressure.
+
+Lets look at a simplified version of axisymmetric equilibrium. We look at the
+radial component of Ampere's Law
+\begin{equation}
+  \label{eq:18}
+  \frac{4\pi}{c}J^r = \mathcal{J}\left( \frac{\partial B_{\zeta}}{\partial \theta} - \frac{\partial B_{\theta}}{\partial\zeta} \right) ,\quad \mathcal{J}^{-1} = \nabla r\cdot(\nabla\theta\times\nabla\zeta)
+\end{equation}
+where $r$ is some variable that labels the field lines. This tells us that
+$B_{\zeta}$ only depends on flux label $r$, so we can write $B$ field as
+\begin{equation}
+  \label{eq:19}
+  \mathbf{B} = I(r)\nabla\zeta + \nabla\zeta \times \nabla \psi_p
+\end{equation}
+We can plug this into our force balance to get
+\begin{equation}
+  \label{eq:20}
+  cp' = \mathcal{J}^{-1}B^{\theta}(qJ^{\theta} - J^{\zeta})
+\end{equation}
+and we can find some expressions for $J^{\theta}$ and $J^{\zeta}$. We can find
+the Grad-Shafranov equation
+\begin{equation}
+  \label{eq:21}
+  R^2\nabla\cdot(R^{-2}\nabla\psi_p) = -I\frac{dI}{d\psi_p} - 4\pi R^2\frac{dp}{d\psi_p}
+\end{equation}
+
+If we use cylindrical coordinates $(R, Z)$ and define $\psi_p = u\sqrt{R}$, then
+we can find a Poisson equation for $u$, given $p(u)$, $I(u)$ and some boundary
+condition we can solve it iteratively.
+
+Lets look at one way to solve it numerically. The idea is to map the constant
+flux surfaces conformally to a circle, and transform the Poisson equation
+accordingly. Now because this is a periodic domain we can solve the equation
+using spectral method. On a computer we can use FFT to quickly solve the
+equation using Fourier transform. However when we do the conformal map back to
+the original domain, there might be bunching of grid points or region with
+relatively few grid points, so one needs to be careful.
+
+We can also use similar analysis to give Grad-Shafranov equation for the
+parallel current:
+\begin{equation}
+  \label{eq:22}
+  J_{\parallel} = \frac{-c}{4\pi}B\frac{dI}{d\psi_p} - \frac{cI}{B}\frac{dp}{d\psi_p} = \sum_se_s\int d^3v\,v_{\parallel}F_{s}
+\end{equation}
+The occurance of distribution function necessitates kinetic treatment.
+
+\subsection{Stability}
+
+In this kind of plasma there is a wide zoo of plasma instabilities. Due to the
+toroidal geometry it is difficult to decouple the modes, so it is a huge mess.
+Lets only talk a bit about the most unstable modes.
+
+When we solve the equilibrium problem we saw there are a number of different
+forces on the plasma. We have field line ``tension'' which opposes the bending
+of magnetic field lines. The most dangerous mode is due to opposing the bending
+field line which has $k_{\parallel} \ll k_{\perp}$. There is the distinction of
+``rational'' field lines which closes themselves, and ``irrational'' field lines
+which don't. Only on rational field lines we can have $k_{\parallel} = 0$.
+Flute perturbations are unstable when the field line curves towards the plasma,
+but it its stable when the field line curvature is away from plasma.
+
+Tokamak has good and bad curvature regions. Field lines will bend outwards in
+the bad curvature region to somewhat self-stabilize. If we have field-aligned
+perturbations at a given radius, but different pitch of magnetic field lines at
+neighboring radius it could also stabilize the perturbation.
+
+Another kind of instability is kink instability. Kinks come from helical
+perturbation and is current driven. If we kink a magnetic field line bundle like
+a hose, the upper part of the kink has less magnetic pressure so it is even
+easier to kink upwards, which runs away. Again field line bending can stabilize
+this effect.
+
+In theory if we want to find out whether the plasma is stable, we want to
+linearize the MHD equations and solve the linear problem as an eigenvalue
+problem. However in Tokamak plasmas all the modes couple, so it is not as easy
+to do the same thing. We use the so-called energy principle by looking at the
+energy and work of the displacements
+\begin{equation}
+  \label{eq:23}
+  \delta W (\xi^{*}, \xi) = -\frac{1}{2}\int d^3r \xi^{*}\cdot \mathbf{F}(\xi),\quad E(\xi^{*},\xi) = \frac{1}{2}\int d^3r\rho_0\dot{\xi}^{*}\cdot\dot{\xi}
+\end{equation}
+and we use variational principle on
+\begin{equation}
+  \label{eq:24}
+  \Omega^2 = \frac{\delta W}{E},\quad \delta\Omega^2 = 0
+\end{equation}
+If we expand the displacement into discretized modes, then we find
+\begin{equation}
+  \label{eq:25}
+  \delta W = \sum_n \left| a_n \right|^2\omega_n^2
+\end{equation}
+When $\delta W < 0$ we have an instability, and if $\delta W\geq 0$ for all
+displacements then we have stability. The complication here is that in MHD we
+have a continuous spectrum of modes, so we need to do more work but the
+principle is similar.
+
+In practice the problem is reduced to numerically minimizing the function
+\begin{equation}
+  \label{eq:26}
+  \delta W = \sum_n\sum_ma_na_m\mathbf{F}(\xi_n,\xi_m)
+\end{equation}
+
+I honestly don't understand what I'm writing\dots
+
+
+\end{document}
