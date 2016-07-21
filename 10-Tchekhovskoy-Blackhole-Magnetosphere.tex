@@ -1,0 +1,219 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+\newcommand{\Jmath}{J}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{Black Hole Magnetospheres}
+\author{Alexander Tchekhovskoy}
+\date{July 21, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+Lets start with an overview of where do we see black holes in the universe.
+There are supermassive black holes with $M\sim 10^{6-10}M_{\odot}$, which sit in
+the center of galaxies. There are also stellar mass black holes we can see,
+which could be in binaries, or associated with Gamma-ray bursts or mergers with
+neutron stars. Recently there is also evidence of $M\sim 10^{2-5}M_{\odot}$
+intermediate mass black holes which might be ultra-luminous X-ray sources. All
+of these black holes produces jets. We don't really need an event horizon to
+produce a jet though. We can have jets from stars, neutron stars and WDs as
+well. There must be some universal properties of jet production that do not
+depend too much on the exact dynamics of the central object.
+
+How do we observe jets? There is a famous jet 3C279 which is traveling towards
+us at $v\approx 0.997c$. Its sky location appears to be moving superluminally,
+but it is an artifact of it moving towards us. We observe these jets at multiple
+wave bands, from radio, IR/optical, to X-rays and Gamma rays. We can also
+potentially detect cosmic rays, neutrinos, and gravitational waves from them.
+
+Jets can also affect the galaxies and clusters around them. Examples can be the
+Perseus cluster, M87, and MS0735.6 systems. The jets extract a large fraction of
+the black hole energy and throw them into the ambient environment.
+
+The masses of the central BHs and their host galaxies rotation curve are
+correlated. This indicates a way for the BH to know about the galaxy around it.
+The AGN radio luminosity also shows radio quiet and radio loud dichonomy, which
+seems to suggest that there is at least an additional hidden parameter about the
+jet other than $M$ and $\dot{M}$. Possibilities can be magnetic flux difference,
+effect of the ambient medium instead of the BH itself, or it could be BH spin.
+
+Different jets can also have different morphology, for example the Cygnus A
+galaxy and M87 galaxy, which host similar mass black holes, but have very
+different image of their jets (Fanaroff \& Riley 1974).
+
+In April there will be more observing tools available in the form of the Event
+Horizon Telescope (EHT), which can directly look at the vincinity of the black
+hole in the multiple of horizon size.
+
+Lets look at a simple illustration of how jet is produced. Consider a rotating
+central object and a ceiling above it which is perfectly conducting,
+representing the ambient medium. Starting with a straight field line, since it
+is frozen into the ambient medium, as the central object rotates the magnetic
+field will be wound up, and when there is enough pressure due to the development of
+magnetic pressure it will push away and into the interstellar medium.
+
+What powers the outflow? Rotation plus large scale magnetic flux leads to jets.
+In reality, the black hole is very simple. It has only two hairs: mass and spin.
+It knows nothing adbout the magneic flux. However, external accretion can
+provide magnetic flux threading the black hole event horizon.
+
+\dots
+
+\subsection{Jet Acceleration}
+
+Consider a neutron star which is not rotating, with field lines sticking out
+from the surface. If we set it rotating, the field lines will start to lag
+behind. The field line perturbation will travel along the field at Alfven speed.
+We assume the jets are massless (force free) for simplicity. In this limit the
+Alfven velocity will be speed of light $v_{A} = c$. We can find $B_{\phi}$ by
+\begin{equation}
+  \label{eq:1}
+  B_{\phi} = -\frac{v_{\phi}}{c}B_{r} = -\frac{\Omega R}{c}B_{r}
+\end{equation}
+The electric field is exactly the same as the toroidal magnetic field
+\begin{equation}
+  \label{eq:2}
+  E = \left| -\frac{\mathbf{v}}{c}\times \mathbf{B} \right| = \frac{\Omega R}{c} B_r
+\end{equation}
+Therefore the drift velocity of the plasma is can be calculated from $E$ cross
+$B$, and find the Lorentz factor
+\begin{equation}
+  \label{eq:3}
+  \frac{v}{c} = \frac{E}{B}, \quad\gamma^2 = \frac{1}{1 - v^2/c^2} = 1 + (\Omega R/c)^2
+\end{equation}
+This means that near the stellar surface, the Lorentz factor will be around 1,
+but outside the light cylinder the Lorentz factor scales linearly with distance.
+
+However this kind of acceleration can't continue forever, because the outflow
+has mass attached to it. Lets look at the conserved quantities along jets, which
+are ratios of conserved fluxes. One conserved quantity is
+\begin{equation}
+  \label{eq:4}
+  \eta = \frac{F_M}{F_B} = \frac{\gamma \rho v_p}{B_p} = \mathrm{const}
+\end{equation}
+which is the ratio of the magnetic flux to the mass flux. The second is the
+ratio of the energy flux over mass flux
+\begin{equation}
+  \label{eq:5}
+  \mu = \frac{F_E}{F_M} = \gamma\frac{F_{EM}}{F_{KE}} + \gamma
+\end{equation}
+The ratio $F_{EM}/F_{KE}$ is called the magnetization $\sigma = b^2/4\pi\rho
+c^2$. This means that $\mu$ sets the maximum Lorentz factor. Also $\sigma$ sets
+the speed of the fast waves $\gamma_F = \sigma^{1/2}$. In force-free the fast
+waves travel at speed of light. In reality when the jet Lorentz factor catches
+up with this fast wave, force-free approximation breaks down
+\begin{equation}
+  \label{eq:6}
+  \gamma = \gamma_F = \sigma^{1/2} = (\mu/\gamma)^{1/2},\quad \gamma = \mu^{1/3}\ll \mu
+\end{equation}
+Because acceleration cease to be linear after a certain radius, we can't really
+get to the limit $\gamma \sim \mu$, but way less than that.
+
+In 2D $\gamma$ doesn't saturate exactly at $\mu^{1/3}$, but at
+\begin{equation}
+  \label{eq:7}
+  \gamma \propto \mu^{1/3}\log^{1/3}r
+\end{equation}
+
+Our key assumption above was that $B_{\phi}^2 - E^2 \ll B_r^2$. Because of this,
+toroidal magnetic pressure contribution breaks force balance, bending the field
+lines, and fast jets can't make sharp turns. In the opposite limit we ignore
+$B_r$, we have
+\begin{equation}
+  \label{eq:8}
+  \gamma^2 = \frac{B_{\phi}^2}{B_{\phi}^2 - E^2}
+\end{equation}
+If we consider the force in more detail, one force is the pressure gradient $F_m
+= -\nabla p_m = p_m/R$. The other is the centrifugal force $F_{c} =
+\epsilon_m\gamma^2/R_{c}$. If we want these forces to be equal, then
+\begin{equation}
+  \label{eq:9}
+  \gamma = \left( \frac{R_{c}}{R} \right)^{1/2}
+\end{equation}
+Now we can combine both limits
+\begin{equation}
+  \label{eq:10}
+  \frac{1}{\gamma^2} = \frac{1}{\gamma_1^2} + \frac{1}{\gamma_2^2}
+\end{equation}
+where $\gamma_{1}$ and $\gamma_{2}$ are the two limits we got in the two
+different extremes.
+
+Now lets look back at the fluxes. The electromagnetic energy flux is
+\begin{equation}
+  \label{eq:11}
+  F_{EM} = \frac{cEB_{\phi}}{4\pi} = \frac{\omega^2R^2B_{\phi}^2}{4\pi c}
+\end{equation}
+we can rewrite $\mu$ as
+\begin{equation}
+  \label{eq:12}
+  \frac{\Omega^2}{4\pi^2\eta c}\pi B_pR^2 + \gamma = \frac{\mu}{\Phi}\pi B_pR^2 + \gamma
+\end{equation}
+where $\Phi$ is the magnetic flux $\Phi = (\pi B_pR^2)_F$. Therefore there will
+be no acceleration if the magnetic flux remains at large distances:
+\begin{equation}
+  \label{eq:13}
+  \frac{\gamma}{\mu} = 1 - \frac{\pi B_pR^2}{\Phi}
+\end{equation}
+
+How do hydro accelerate fluids? We need to make a nozzle, and in MHD we need
+something similar. We need magnetic flux bunching toward jet axis.
+
+Outside the fast point $\gamma_{F}$ all signals travel inside the cone with
+opening angle
+\begin{equation}
+  \label{eq:14}
+  \xi = \frac{\gamma_F}{\gamma} \approx \frac{\sigma^{1/2}}{\gamma}
+\end{equation}
+For communication across jet requires that $\theta \lesssim \xi$. Thus the
+acceleration limit can be relaxed
+\begin{equation}
+  \label{eq:15}
+  \gamma \lesssim \frac{\mu^{1/3}}{\theta^{2/3}}
+\end{equation}
+Therefore jets accelerate much better near the axis!
+
+However, most jets are collimated and are not monopolar. How do collimated jets
+accelerate? Collimated jets by its geometry has to keep in causal contact. All
+signals travel inside the Mach cone
+\begin{equation}
+  \label{eq:16}
+  \xi \leq \frac{\gamma_F}{\gamma} = \frac{\sigma^{1/2}}{\gamma}
+\end{equation}
+We expect that $\gamma\theta \lesssim \sigma^{1/2} \lesssim 1$. In AGN jets this
+is observed, but in GRBs we have $\gamma\theta \sim 10-100$. What does this
+mean? One possibility is that GRB jets are unconfined after a certain radius
+which could be the surface of a star. When the magnetic field lines are
+unconfined they can expand and create bigger pressure gradient.
+
+
+
+
+
+\end{document}
