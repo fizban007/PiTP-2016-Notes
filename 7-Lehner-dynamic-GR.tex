@@ -52,6 +52,10 @@ We will be talking about the challenges and problems simulating and controlling
 dynamic space time. Let's go slowly from the beautiful theory of Einstein and
 put it into the computer to compute it dynamically.
 
+\subsection{Well-posedness}
+
+``Theorems are permanent, tricks are ephemeral.''
+
 We start with the theorem by Hadamard: any problem about a physical system
 should be well posed. By well posed (WP), we mean:
 \begin{itemize}
@@ -93,9 +97,11 @@ the solution in the form of
   \label{eq:4}
   u = DF_1(t + x)\cdot t + F_2(t + x),\quad v = F_1(t + x)
 \end{equation}
-the first part of $u$ grows linearly with time. This is called a weakly
-hyperbolic system, and we now care about the ``Rest'' of the problem. If we
-couple this, and add $u$ to $v_{,t}$, then the solution of $v$ becomes
+the first part of $u$ grows linearly with time. This solution is okay and
+satisfies our WPness condition, but the growth with time is alarming. This is
+called a weakly hyperbolic system, and we now need to care about the ``Rest'' of
+the problem. For example, if we couple this, and add $u$ to $v_{,t}$, then the solution of
+$v$ becomes
 \begin{equation}
   \label{eq:5}
   v = c_1e^{c_1(t+x)} + c_2e^{t\sqrt{c_2}}
@@ -103,6 +109,8 @@ couple this, and add $u$ to $v_{,t}$, then the solution of $v$ becomes
 and this solution is exponentially unstable to changes to initial condition,
 which is a badly posed problem. We especially want to avoid this in a numerical
 system because the initial conditions are never exact.
+
+\subsection{Crash Course in GR}
 
 How do we make sure our complex problem is well posed when such a simple one can
 be bad? Lets consider the Einstein equation
@@ -175,6 +183,8 @@ We finally define the Einstein tensor
   \label{eq:15}
   G_{ab} = R_{ab} - \frac{1}{2}g_{ab}R,\quad R_{ab} = \tensor{R}{^{d}_{adb}},\quad R = g^{ab}R_{ab}
 \end{equation}
+
+\subsection{Specializing into a Formalism}
 
 Now lets get into how to solve these equations in the computer. In a sense our
 problem is ill formed from the get go because everything depends on our choice
@@ -280,6 +290,8 @@ We also have
 From these we know that the spatial curvatures have second order time
 derivatives, which makes it into a hyperbolic system, but the rest unfortunately
 turns the system into weakly hyperbolic.
+
+\subsection{Overcoming the Weakly Hyperbolic Problem}
 
 There is a whole bunch of choices of $\alpha$ and $\beta$, but lets first
 discuss the problem that this system is weakly hyperbolic. Lets take a step back
