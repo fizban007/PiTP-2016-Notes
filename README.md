@@ -2,7 +2,9 @@
 ===========================================
 
 This repository is my attempt at recording notes for the
-[2016 PiTP summer school](https://pitp.ias.edu/) at IAS, Princeton.
+[2016 PiTP summer school](https://pitp.ias.edu/) at IAS, Princeton. I type the
+notes during the lecture and record/summarize what the lecturer is saying as
+much as I physically can.
 
 Disclaimer: The notes are taken during the lecture and are very rough, may
 contain typos, misunderstandings, bugs, lethal substance, etc. Use at your own
