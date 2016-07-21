@@ -315,7 +315,7 @@ Integrating this over all radii to infinity we now have
 where $\tau$ is the optical depth $\tau = \int \rho\kappa\,dr$. That is exactly
 we have, and the optical depth is the one uncertain numerical coefficient.
 
-For line-driven winds refer to (Lucy \& Solomon 1970; Castor, Abott, Klein 1975).
+For line-driven winds refer to (\href{http://adsabs.harvard.edu/abs/1970ApJ...159..879L}{Lucy \& Solomon 1970}; Castor, Abott, Klein 1975).
 
 For applications of this wind theory in other models/fields, refer to the
 original slides! Mentioned models are thermally driven galactic winds, line
@@ -323,7 +323,272 @@ driven winds from accreting black holes, magnetized winds from accretion disks.
 
 \section{Lecture 2}
 
-\subsection{Instabilities in Fluids and Plasmas}
+\subsection{Instabilities in Ideal Fluids and Dilute Plasmas}
 
+Last time we used the outflow from massive stars to introduce different
+techniques and methods that show up in different physical contexts. Today we
+will do the same on another topic.
+
+\subsection{Instabilities in Ideal Fluids}
+
+Who cares about linear instabilities when we have simulations? We will argue
+that even in the present days the study of linear instabilities is still very
+useful. We can't simulate everything, so we need to know what physics to include
+in the first place. It is very instructive to identify the key physics problems
+of interest and study of linear instabilities is a way to approach that.
+
+Linear instabilities are also a way to produce turbulent transport of mass,
+momentum, energy, etc. The physics of linear instabilities is often still there
+even when the system has already evolved into the nonlinear state. Linear
+instabilities can also fundamentally change the equilibrium structure and
+dynamics of the system. For example the FRW universe is unstable to
+gravitational perturbations and it leads to the large scale structures we know
+today. Another example is the convection in stars. If we write down the
+equilibrium theory of stars we will get everything wrong, because the
+equilibrium theory relies on diffusion but a large portion of the star like the
+sun is convective.
+
+Ideal single fluid (M)HD is a useful starting point for astrophysical plasmas.
+It encapsulates the conservation of key quantities like mass, energy, momentum,
+and does better than expected. However non-ideal effects and multi-fluid effects
+can be very important in many systems. For example in star formation and planet
+formation we have dust in addition to multi-fluid MHD. In intracluster plasma in
+the galaxy the plasma is very dilute and near collisionless so we need to
+consider anisotropic conduction, etc. In luminous accreting black holes we need
+to consider radiation pressure effects in addition to MHD. It is because of
+these diversities that we need to study the system in the linear regime first
+before we dive into simulations directly.
+
+
+\subsubsection{Buoyancy}
+
+The basic setup of considering whether a system is stable under buoyancy is as
+follows. Suppose we have a gravity field and a downwards entropy gradient, it is
+a typical system for convection: $ds/dz < 0$. This is called the Schwarzschild
+criterion. This is however only a specific criterion. The motion is usually slow
+and adiabatic, with time scale
+\begin{equation}
+  \label{eq:24}
+  t_\mathrm{sound} \sim \mathrm{hr} \ll t_\mathrm{buoyancy} \sim \mathrm{month} \ll t_\mathrm{diffusion} \sim 10^{4}\,\mathrm{yr}
+\end{equation}
+
+If we have a blob of fluid that flow from region of higher entropy to lower
+entropy further out. If the motion is adiabatic and in pressure equilibrium, it
+will decrease due to
+\begin{equation}
+  \label{eq:25}
+  s(p, \rho) \propto \ln(p/\rho^{\gamma})
+\end{equation}
+and since it is less dense than the surroundings it will continue
+to go up, thus run away, triggering the instability.
+
+When people model the star, people first ignore convection, and model using
+radiation, gravity, etc. Afterwards people add in convection and ask whether the
+model is stable under convection.
+
+The above reasoning hides an effect which is part of everyday life: difference
+in chemical composition. If we put heavy fluid above light fluid, the heavy one
+will sink and create fingers into the lighter one, creating the convection
+instability.
+
+The key thing to realize is that the pressure of an ideal gas depends on the
+composition
+\begin{equation}
+  \label{eq:26}
+  p = \sum_jn_jkT = \frac{\rho kT}{\mu m_p}
+\end{equation}
+where $\mu$ is the mean molecular weight, i.e.\ average mass per particle. $\mu
+= 1/2$ for ionized H, $\mu = 4/3$ for He, and $\mu = 0.62$ for solar
+metallicity. Now we can expand out the entropy derivative $ds/dz$
+\begin{equation}
+  \label{eq:27}
+  \frac{ds}{dz} = \frac{d\ln p}{dz} - \gamma\frac{d\ln \rho}{dz} = \frac{d\ln T}{dz} - (\gamma - 1)\frac{d\ln \rho}{dz} - \frac{d\ln \mu}{dz}
+\end{equation}
+This means that $d\mu/dz > 0$ has a destabilizing effect, which confirms our
+everyday experience: heavy on top of light is unstable. This is a continuous
+version of the Rayleigh-Taylor instability.
+
+This is very relevant in stars. The standard composition gradient in the normal
+course of stellar evolution is that heavy elements show up towards the center,
+and it has a stabilizing effect on the stellar structure.
+
+Lets look at our assumption of $s$ being constant. Consider the diffusion time
+scale
+\begin{equation}
+  \label{eq:28}
+  t_\mathrm{diff} \sim H^2/\ell c \sim \tau H/c, \quad t_\mathrm{conv} \gtrsim H/c_s
+\end{equation}
+where $H$ is the characteristic scale height of system, and $\ell$ is the photon
+free path. Therefore $t_\mathrm{diff} \lesssim t_\mathrm{conv}$ if $\tau
+\lesssim c/c_{s}$. The place we see photon come from is where $\tau\sim 1$.
+Somewhere between that and where $\tau \sim c/c_{s}$, the assumption of
+adiabatic will fail, since we have rapid thermal diffusion in the surface layers
+of the star.
+
+Lets examine our reasoning again. When we thought of the fluid element going from
+initial to final position, we assumed entropy being constant. However when we
+have rapid diffusion, in the limit we have constant $T$ because rapid thermal
+diffusion tries to even out the temperature gradient. This means at the final
+position the temperature of the fluid element will be about the same as the
+surroundings, and because it is still in pressure equilibrium, it will tend to
+wipe out density gradients. This has a suppression effect on Buoyancy.
+
+This effect has been seen in simulations, e.g.\
+\href{http://arxiv.org/abs/1509.05417}{(Jiang et. al. 2015)}. In their
+simulations the convective flux near the surface of the star is down by nearly
+two orders of magnitude. The main difference in the simulation between the
+surface of the star and interior is the optical depth.
+
+Lets think about the microscopic energy transport due to photon transfer. This
+effect of heat transport in normal stars because its free path is way
+smaller than electron free path. However in degenerate plasmas like white dwarfs
+and neutron stars, and in dilute and hot non-degenerate plasmas like solar
+corona and hot accretion flows, thermal conduction can dominate. In the former
+case thermal conduction is typically isotropic for lower magnetic fields like in
+WDs, but anisotropic for NS. For the later case thermal conduction is highly
+anisotropic because $l_{e}\gg \rho_{e}$. The main mechanism that determines free
+path is Coulomb collision between electron and protons.
+
+Anisotropic heat conduction can induce convection and fundamentally change the
+way heat is conducted in the plasma. The setup we want to consider is similar to
+the previous one. Consider an environment where the temperature is hot down
+below and cold up above. A weak $B$ field points horizontally, which only
+channels heat flow but weak enough to have now dynamical effect. We also assume
+the thermal conduction time is much smaller than the buoyancy time. If we move a
+blob of fluid from the hot region to the cold region along the $B$ field line.
+
+Since thermal conduction is efficient, $T$ is maintained to be constant along
+the magnetic field line. At the final position the blob has the same pressure as
+the surroundings, with the same temperature as initially, which is hotter than
+the surroundings, so it has less density than the surroundings. Therefore this
+introduces a convective instability. The condition now becomes $dT/dz < 0$, and
+the growth time is comparable to the dynamic time of the system.
+
+An example simulation is covered in
+\href{http://adsabs.harvard.edu/abs/2011MNRAS.413.1295M}{(McCourt et.\ al.\
+  2011)}. The instability saturates by generating sustained convection and
+amplifying the magnetic field.
+
+There is sometimes a disconnect between actually doing the math of linear
+instability and drawing the picture of the instability. So let us do some math
+to illustrate the connection between the theory and the picture we discussed
+above.
+
+Consider the set of MHD including the Braginskii term (refer to Kunz's lecture).
+The key term in the equations is the anisotropy term $\nabla\cdot \mathbf{Q}$,
+where
+\begin{equation}
+  \label{eq:29}
+  \mathbf{Q} = -\chi \hat{b} (\hat{b}\cdot\nabla)T
+\end{equation}
+which describes the heat flow along the magnetic field line. We've assumed that
+the fluid element is always in pressure equilibrium with the surroundings. This
+is actually an approximation, and what this means mathematically is that we keep
+density perturbations due to buoyancy but not due to sound waves. Sound waves is
+what we assume to wipe out the pressure differences. This also means
+$\nabla\cdot \mathbf{v} = 0$.
+
+This looks odd at first since it says incompressible fluid, but we are
+interested in density variations. This is simply done to get sound waves out of
+the problem, and only keeping the density perturbations due to gravity.
+
+Lets assume the perturbations vary as $e^{i(\mathbf{k}\cdot \mathbf{x} - \omega
+  t)}$, where $\mathbf{k}$ is in the $x$ direction, and $B$ field is in the $x$
+direction as well. If we perturb the heat flux (Eulerian, at fixed place)
+\begin{equation}
+  \label{eq:30}
+  \begin{split}
+    \delta Q &= -\chi \delta \hat{b}(\hat{b}\cdot\nabla) T \\
+    &-\chi \hat{b}(\delta \hat{b}\cdot\nabla) T \\
+    &-\chi \hat{b}(\hat{b}\cdot\nabla) \delta T
+  \end{split}
+\end{equation}
+The first term is zero due to our assumption that $T$ is constant along the $B$
+field direction. Due to our setup there is no first order change in the
+magnitude of the $B$ field, so $\delta \hat{b} = \delta \mathbf{B} / B_{0}$. We also
+have
+\begin{equation}
+  \label{eq:31}
+  \begin{split}
+    \frac{\partial \mathbf{B}}{\partial t} &= \nabla\times (\mathbf{v}\times \mathbf{B}) \\
+    &= (\mathbf{B}\cdot \nabla)\mathbf{v} - (\mathbf{v}\cdot\nabla)\mathbf{B}
+  \end{split}
+\end{equation}
+the second term is zero, so we have the linearized version as
+\begin{equation}
+  \label{eq:32}
+  -i\omega \delta \mathbf{B} = ik B_0\delta \mathbf{v} = ikB_0(-i\omega)\delta \boldsymbol{\xi}
+\end{equation}
+so we can write $\delta \hat{b} = ik\delta\boldsymbol{\xi}$. Plugging this into
+our equation of heat flux we get
+\begin{equation}
+  \label{eq:33}
+  \begin{split}
+    \delta Q &= -\chi (ik\boldsymbol{\xi}\cdot\nabla)T \hat{b} - \chi ik \hat{b} \delta T \\
+    &= -ik\chi (\xi_z\frac{\partial T}{\partial z} + \delta T)\hat{b}
+  \end{split}
+\end{equation}
+The divergence of this is simply bringing in another $ik$, so we have
+\begin{equation}
+  \label{eq:34}
+  \nabla\cdot\delta Q = k^2\chi(\xi_z\frac{\partial T}{\partial z} + \delta T)
+\end{equation}
+Since the time scale for thermal conduction is very short, which means
+\begin{equation}
+  \label{eq:35}
+  t_\mathrm{cond} \sim \frac{\lambda^2}{\chi} = \frac{1}{k^2\chi} \to 0
+\end{equation}
+If we take this limit, our equation will blow up, which is bad, unless we also
+take the terms inside the brackets to be zero. What this means is that rapid
+conduction implies that
+\begin{equation}
+  \label{eq:36}
+  \delta T + \xi_{z}\frac{\partial T}{\partial z} = 0 = \Delta T
+\end{equation}
+which is exactly the Lagrangian change in temperature. Which means that moving
+with the blob, the temperature doesn't change.
+
+Lastly if we now use pressure equilibrium, which says
+\begin{equation}
+  \label{eq:37}
+  \frac{\delta\rho}{\rho} + \frac{\delta T}{T} = 0
+\end{equation}
+therefore we can replace $\delta T$:
+\begin{equation}
+  \label{eq:38}
+  \frac{\delta \rho}{\rho} = \xi_z\frac{d\ln T}{dz}
+\end{equation}
+What this means is that if $\xi_z$ is positive and if $dT/dz$ is negative, then
+$\rho$ will decrease and it corresponds to a buoyancy system.
+
+One thing that we didn't get is the growth rate of the instability. What we did
+was deriving the condition of the instability. To get the growth rate, we need
+to keep all the linear terms and do the whole perturbation theory. One will
+eventually get a growth rate
+\begin{equation}
+  \label{eq:39}
+  \gamma \approx \left[ g \left| \frac{d\ln T}{dz} \right| \right]^{1/2}
+\end{equation}
+
+When the magnetic field is too strong, the magnetic force will prevent the
+bending of magnetic field lines, so it will suppress the instability. This
+happens roughly when $\beta \sim 1$.
+
+Is this an overly simplified problem because we have only horizontal magnetic
+field? It turns out it is more generic than our simple setup. Even when there is
+vertical magnetic field which allows temperature exchange vertically, it doesn't
+wipe out the instability.
+
+If we revert the temperature gradient, then this argument tells us that this
+system is stable, but it is wrong. The physics is different, because this
+instability only happens when there is a component of the magnetic field in the
+vertical direction. This is called the heat flux-driven buoyancy instability
+(HBI). This instability operates best when $\mathbf{k}$ is 45 degrees with the
+$\mathbf{B}$ field. We can derive this using the same algebra as above, which is
+worked out in the notes.
+
+It turns out that a weakly magnetized plasma with anisotropic heat transport is
+always buoyantly unstable. This manifests mostly in hot plasma in galaxy
+clusters where both thermal conduction and viscosity are important.
 
 \end{document}
