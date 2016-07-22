@@ -363,6 +363,184 @@ do the same thing as above we have now
 This is now a damped wave equation and will damp away deviation from the
 constraint on a time scale determined by $\gamma_{0}$.
 
+\section{Lecture 2}
+
+Why insist in hyperbolic? Why 1st order formulation? What is the difference
+between GR and hydro?
+
+The reason we insist in strong/symmetric/strict hyperbolicity, is that we want
+local solutions to exist. However, we can't say anything about global solutions,
+since it is still an open problem. The reason we write every equation in first
+order formalism is that, if we have a set of eigenvectors, then we can
+diagonalize the system. We can write the equations into
+\begin{equation}
+  \label{eq:26}
+  U_{,t} = A\gamma_iU \longrightarrow T^{-1}U_{,t} = D T^{-1}\partial_{i} U
+\end{equation}
+If the transformation matrices do not depend on position we can make $T^{-1}U$
+our new unknowns, so now we can now easily do the propagation and evolution.
+Therefore this property of 1st order and diagonalizable is sufficient but not
+necessary for a WP problem.
+
+On the problem of constraints. In MHD we have $\nabla\cdot \mathbf{B} = 0$,
+which has physical meaning: there is no monopoles. Therefore it is very
+important physically to respect this constraint, and failing that will probably
+lead to unphysical behavior. However in GR, we have energy and momentum
+conservation, but we don't have a very good physical motivation for the
+constraints apart from that. In GR we have ten degrees of freedom but 8 of the
+equations are some kind of constraints, only 2 of them physical evolution
+equations. This is kind of unfortunate.
+
+Comparing hydro and GR, they actually both reduce to first order form. In this
+form there is almost no difference between the hydro equations and the GR
+equations. If we take the largest eigenvalue in the diagonalized matrix, it
+determines how fast things propagate and determines the dynamics of the system.
+However the one thing that is different between these two theories is that in
+hydro these eigenvalues may depend on the fluid property itself. This is the
+reason we can have shocks, etc. However in GR we have the form $g\partial^2g$,
+and in mathematical terms it is called linearly degenerate. When solved GR has
+no modes with speed depending on the state of the system. Therefore the hydro
+equations are referred to as truly nonlinear equations, but GR equations are
+linearly degenerate nonlinear theories. The worse things can happen in GR are
+singularities.
+
+The CFL condition is stricter in GR than in hydro since $c$ is typically much
+larger than $c_{s}$. Therefore it is worth avoiding GR when it is possible.
+
+We talked about constraint damping last time. It didn't mean that the problem
+was not well posed, because in the limit of infinite resolution, the right
+solution will be obtained, but for practical purposes the behavior is not good
+enough, therefore we need to constraint transport technique.
+
+Also a word about coordinate conditions. Remember we said we want something like
+$\nabla_a\nabla^aH_{b} = -\xi$. This was proposed in 2005, where $\xi$ has an
+$\alpha$ term and a damping term. Without this term the problem was not working.
+However two years later, it turned out that taking $H_{b} = 0$ was okay in
+evolving the system. The difference was just the resolution! 4x better refined
+grid and we found that $\Gamma_{b} = 0$ is okay. This is not to take away from
+the technique since it was way more robust, but we need to see the development
+as well.
+
+Through the GH formulation, from $\Gamma_{a} = -H_{a}$ we expand to obtain
+\begin{equation}
+  \label{eq:33}
+  \partial_t\alpha = -\alpha^2H_an^a + \dots ,\quad \partial_t\beta^i = \alpha^2\perp H^i
+\end{equation}
+Thus we can relate the choice of $H$ to the choice of $\alpha$ and $\beta$.
+
+Typically in astro people use Schwarzschild or Kerr in Boyl-Lindquist
+coordinates, but these are horrible coordinates because the metric blows up at
+the horizon. One should use the Eddington-Finkelstein coordinates instead to
+avoid issues.
+
+We want to say a bit about how we treat black holes. We excise the region of the
+black holes so that we can avoid the singularity. In a dynamic simulation we
+can't know where is the horizon, since by definition it is a region which can't
+be accessed by infinite observers in finite time. We can instead use the idea of
+``trapped region'' which is contained inside the event horizon. In the trapped
+region all null lines converge inwards. If we find this is the case, then we know
+that we are already inside the event horizon, and it is safe to excise this
+region.
+
+The other strategy of avoiding singularity is to use a kind of ``wormhole''
+solution. We can use such kind of solution to cut the region with singularity,
+patch it with a wormhole solution and map it to another region which we don't
+care that much. The excision method has some funny condition at the excision
+boundary with respect to the derivatives, but the avoidance method requires
+careful engineering of the coordinates.
+
+Lets look at hyperbolic equations a bit more. We look at the equation
+$u_{,t}=u_{,x}$ again, because it is such a generic equation for hyperbolic
+systems. There is an analytic way of analyzing the stability for this equation.
+We can define the ``energy'' or the norm of the solution
+\begin{equation}
+  \label{eq:35}
+  E = \int u^2\,dx
+\end{equation}
+and now we can ask how this ``energy'' is going to evolve in time
+\begin{equation}
+  \label{eq:36}
+  \partial_tE = \int 2u\dot{u}\,dx = \int 2uu_{,x}\,dx = \left. u^2\right|_{L}^{R}
+\end{equation}
+Therefore $E_{t} = u^2_{R} - u^{2}_{L}$, which means that the energy evolution
+is given by the energy flux at the left and right ends. This means also that
+energy has bounded norm.
+
+Now if the space is discretized, we can redo the calculation
+\begin{equation}
+  \label{eq:37}
+  E_{,t} = \sum (u_i^2)_{,t}h = \sum 2u_i\dot{u}_ih = \sum 2u_{i}(Du)_ih
+\end{equation}
+where $Du$ is the finite derivative. If we have
+\begin{equation}
+  \label{eq:38}
+  \sum u_i(Du)_ih = \sum \left[ D(u^2) \right]_{i}
+\end{equation}
+then we say $D$ satisfies ``summation by parts'' condition, and we have the same
+result as above. If we use e.g.\, RK3 then fully discrete norm will satisfy this
+equation. This is a general property of the hyperbolic system!
+
+Now what do we add to this? One thing we want to explore is magnetic
+matter/plasma around compact objects like BHs and NSs. We could potentially look
+at the counterpart to GW events. Pre-merger the magnetic field is usually low
+enough that it can't be compared with gravitation, but when after a merger the
+magnetic field can potentially get the energy from the violent merging and crank
+up to even equipartition. This might impact the dynamics and can trigger strong
+energy outflows/bursts.
+
+Other relevant systems are jets from BHs and pulsars. Both are traditional
+astrophysical systems and are intrinsically related to the systems of interest.
+
+As an example of how things can relate to other fields, lets consider BZ effect
+and pulsars. We put a source at the center whether it is an NS or BH. In the
+case of BH the magnetic field could be anchored by some disk.
+
+Already in the 60s it was realized that the region around compact objects is
+filled with low-density plasma. We assume that this low density plasma has no
+mass in any frame of reference, which is the force free approximation
+\begin{equation}
+  \label{eq:39}
+  T_{ab} = T_{ab}^{EM} + T_{ab}^\mathrm{matter} \approx T_{ab}^{EM}
+\end{equation}
+But since $\nabla_{a} T^{ab} = 0$ it means $F^{ab}I_a = 0$, which implies
+Lorentz force being zero. Thus the name ``force-free''. Some consequences
+of this approximation include
+\begin{equation}
+  \label{eq:40}
+  \mathbf{E}\cdot \mathbf{B} = 0, \quad \mathbf{J} = q\frac{\mathbf{E}\wedge \mathbf{B}}{B^2} + (\mathbf{J}\cdot \mathbf{B})\frac{\mathbf{B}}{B^2}
+\end{equation}
+If we have a current like this, we should be able to close the Maxwell
+equations. But one caveat is that in order for the approximation to hold, we
+need $B^2 > E^2$ otherwise the problem is ill-posed, because it means new
+physics is involved which is not contained in this approximation.
+
+Implementing this approximation to NS gives the NS magnetosphere which has a
+light-cylinder, Y-point, and an equatorial current sheet. In BH case background
+field lines gets twisted in the ergosphere and form current sheets there. What
+happens when we have a dynamic situation? If we have a neutron star and suddenly
+it collapses on its own, the information only propagates out at finite speed.
+When the field lines find out this collapse they get twisted, and from the side
+it contracts and undergo reconnection, launching a magnetic loop carrying a
+large amount of energy. 
+
+Lets look at how we do this under the GR framework. We have the Maxwell
+equations
+\begin{equation}
+  \label{eq:41}
+  \nabla_{b}F^{ab} = I^a, \quad \nabla_{b}\tensor[^{*}]{F}{^{ab}} = 0
+\end{equation}
+However for a moment lets imagine we have instead
+\begin{equation}
+  \label{eq:42}
+  \nabla_{b}\left( F^{ab} + g^{ab}\psi \right) = I^a - \alpha\psi n^{a},\quad \nabla_{b}\left( \tensor[^{*}]{F}{^{ab}} + g^{ab}\phi \right) = -\alpha\phi n^{a}
+\end{equation}
+Both $\psi$ and $\phi$ fields satisfy the damped wave equation. This looks like
+the damped constraint equation, therefore these fields play the role of damping
+the deviation from the Maxwell equations. The reason we add fields here is
+necessity, because we don't have any more degrees of freedom to play with. When
+there is some curvature of the spacetime, we can also use this technique to
+evolve Maxwell equations in the GR framework.
+
 
 
 

@@ -1,0 +1,9 @@
+* Optimizing for HPC
+** What optimization means
+In practice high-level optimization is usually not very useful. One need to use
+the knowledge of the system architecture and tools when one chooses algorithms
+and when optimizing. 
+
+Traditional computers are built to move data around, make decisions, and compute
+relatively low order polynomials. 
+** Trends in HPC structure
