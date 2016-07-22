@@ -308,4 +308,134 @@ In practice the problem is reduced to numerically minimizing the function
 I honestly don't understand what I'm writing\dots
 
 
+
+\section{Lecture 2}
+
+We talked about how to confine the plasma with magnetic field configuration.
+Today we are going to talk about the practical challenges and how to put it into
+computer.
+
+\subsection{Turbulence and Transport}
+
+Even when we have an MHD stable plasma in the tokamak, there are small
+turbulences in the system which is highly anisotropic.
+
+The first question we want to ask is how good must the confinement be? We want
+to induce fusion, so we want to balance the power that goes into the fusion
+plasma, vs the rate the energy is transported out
+\begin{equation}
+  \label{eq:3}
+  \frac{p}{\tau_E} = \left( \frac{\partial p}{\partial t} \right)_\mathrm{transport} = \mathcal{S}_\mathrm{fusion}
+\end{equation}
+The rate of fusion is $\mathcal{S}_\mathrm{fusion} = n^2 \left\langle \sigma v
+\right\rangle E_\mathrm{fusion}$. Plugging our scales in, we find that the
+confinement is on the order of $\tau_{E} \sim 1\,\mathrm{s}$.
+
+Without magnetic field, the average speed of particles at thermal speed would be
+$v_{th}\sim 10^5\,\mathrm{m/s}$, so for practical devices the confinement time
+is just $t\sim 10^{-5}\,\mathrm{s}$. We need to use the magnetic field to help
+prolong the confinement time by 5 orders of magnitude.
+
+In a magnetic field, we could have transport between field lines just due to
+collisions, since collision can reverse the direction of its momentum and it
+will gyrate around a different field line. If we model the collision process as a random
+walk, we can get a diffusion equation, with diffusion coefficient
+\begin{equation}
+  \label{eq:27}
+  D\approx \frac{\ell^2}{2\tau}
+\end{equation}
+Lets say the random walk step size $\ell\sim \rho$, and the time to be $\tau
+\sim \tau_C \sim \lambda_{mfp}/v_{th}$. Combining these we have
+\begin{equation}
+  \label{eq:28}
+  \tau_E\sim \left( \frac{a}{\rho} \right)^2 \left( \frac{a}{v_{th}} \right)\dots \sim \left( \frac{\lambda_{mfp}}{a} \right)
+\end{equation}
+This ratio is huge, so confinement time can be very long.
+
+Remember in our toroidal magnetic field the particles undergo trapped orbits,
+which are about 100 times bigger than their gyro radius. This is called
+Neo-classical transport. But even with 1/100 over the above time we can still
+have way longer time than 1s. Fusion would be solved if we only have this kind
+of transport.
+
+But we don't. We have the Toroidal drift instability (ITG/ETG). If we have
+temperature gradient with magnetic field gradient, then the temperature will
+interfere with grad-B drift. At outer edge of the torus, $\nabla B$ aligns with
+temperature gradient, this will give arise to charge separation at the
+surface with hot and cold gradient, which will induce E cross B drift. In the
+inside of the torus we have opposite effect which stabilizes the plasma.
+
+The instability growth rate must depend on temperature gradient since there is
+no instability when there is not gradient. The inside and outside of the torus
+will compete and when we have
+\begin{equation}
+  \label{eq:29}
+  \gamma(T') \gtrsim \frac{v_{th}}{qR}
+\end{equation}
+then we have net instability. The temperature gradient has to exceed a critical
+value to sustain the instability.
+
+This instability depends on charge separation via magnetic drifts, therefore
+growth rate is related to the rate at which charge separation occurs. The time
+rate of charge separation is about the time for particles to drift across the
+wavelength of the perturbation
+\begin{equation}
+  \label{eq:30}
+  \gamma_{k_{\perp}} \sim k_{\perp}v_d \sim \frac{v_{th}}{R}k_{\perp}\rho
+\end{equation}
+However we can't take $k_{\perp}$ to be really large, because when the
+wavelength is smaller than the particle gyro radius, the particle trajectory
+will sample many wavelengths and smear out the effect.
+
+Lets estimate the confine time in the presence of this turbulence. The random
+walk size is around the eddy size which is $\ell\sim \rho$. The average time
+would be $\tau \sim \rho/v_E \sim a/v_{th}$. This gives a confinement time
+$\tau_E\sim 1$.
+
+Everything up to now has been fluid even though collisional mean free path in
+the plasma is long. What about kinetic effects? Significant number of particles
+travel slower than the sound speed, and some particles are trapped in bad
+curvature region and stay there indefinitely. Both these effects have a
+destabilizing effect on the plasma.
+
+The diffusion coefficient depends strongly on the temperature of the plasma
+\begin{equation}
+  \label{eq:32}
+  D_\mathrm{eff} \sim \frac{v_{th}}{a}\left( \frac{\rho}{a} \right)^2p\propto T^{5/2}
+\end{equation}
+This means that diffusion coef is large in core, and making it difficult to go
+above critical temperature gradient.
+
+How do we solve this problem on the computer? There is a huge separation of
+scales of the problem, from electron and ion gyromotion at
+$10^{-12}\,\mathrm{s}$, to the confinement time scale $\tau_{c}\sim
+1\,\mathrm{s}$. If we address this problem directly we need to resolve all the
+scales. In addition to this, since we need to model the distribution function,
+we also need to sample the $v$ space, which could form small scales as well.
+Particles on different Larmor orbits separated by turbulence wavelength will see
+different potential, so we have small scales in $v_{\perp}$ comparable to the
+scale of density fluctuations. In the end the effect of turbulence cascades into
+small scales in both space and momentum space.
+
+If we estimate how many grid points we need to resolve the scales, $10^6$ grid
+points for each spatial direction and $10$ points for each of the velocity
+direction, then we need $10^{34}$ points, which is not possible.
+
+What we do is taking the gyrokinetic approach. We average over the fast
+gryomotion and eliminate one degree of freedom of the particles, and eliminate a
+fast time scale. This saves about $10^{10}$ grid points. We can do better than
+this by doing gyrokinetics at multi-scale. If we take $f = F + \delta f$, where
+$F$ defines the mean piece of the distribution function. We assume that
+\begin{equation}
+  \label{eq:33}
+  \nabla_{\perp}\ln F \sim L^{-1},\quad \nabla_{\perp} \ln \delta f \sim \rho^{-1},\quad \nabla_{\parallel}\ln \delta f \sim L^{-1}
+\end{equation}
+And the mean profile evolves slowly compared to the turbulence. $\rho/L$ is
+assumed to be small and it will be our expansion parameter. Doing this we can
+get the Gyrokinetic-Poisson system: \dots
+
+We solve the system by solving the detailed turbulence in only small parts of
+the box, and map out the region in between, by either taking average or using
+periodicity.
+
 \end{document}
