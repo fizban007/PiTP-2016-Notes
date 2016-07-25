@@ -210,6 +210,8 @@ without stability issues. Larmor radius will maybe get screwed up, and particles
 will bounce around the magnetic field, but the numerical scheme will not blow
 up.
 
+\subsection{Current Deposition}
+
 How about the Poisson equation? On parallel computers this won't scale very
 well. In fact if we are very careful about the way we deposit current, we can
 keep Gauss's law at all times if it is satisfied at the first moment and we are
@@ -224,6 +226,93 @@ current'' through the appropriate faces. In 2D one needs to know if the particle
 crosses 4 or 7 boundaries, and in 3D one needs to account for more
 possibilities. Higher order schemes are also possible (Esirkepov 2001, Umeda
 2004).
+
+\section{Lecture 2}
+
+Last time we covered a lot of the basis of PIC code, up to electromagnetic
+codes and how we integrate particles using Boris pusher and deposit current. 
+
+Since with charge-conserved deposition one can have Poisson equation satisfied
+at all times, we only need to ensure it is satisfied in the initial condition.
+One can either start with $E = 0$ and all electrons on top of ions, which is the
+most common way. We could also have more elaborate states if we insert an
+initial Poisson solve, especially if we only need to do it once.
+
+If we really initialize with charge imbalance but don't add electric field, for
+example only electrons in the initial state, then the code will assume there is
+an equal number of ions in the background grid, which is not moving and provides
+a static background charge density. This is an easy way to initialize plasma
+oscillations.
+
+An improvement to the Buneman method is the zig-zag method proposed by Umeda
+(2003). The essence of this method is simply to replace the particle trajectory
+when it goes through cell boundaries by it going through the cell corner, or
+mid-points of the cell edge. This is an optimization over the Buneman method but
+it has the same problem when going to higher order. Esirkepov scheme works well
+for higher order but it is much more expensive. The alternative is to give up
+charge conservation but just solve Poisson equation every timestep to correct
+the electric field.
+
+One trick to reduce noise is to filter current over the grid to smooth out the
+high frequency aliases. In Fourier code one can simply truncate the wave in $k$
+space, but in grid-space code one can't do that. In finite-difference code one
+does ``digital filtering'' where we replace $\phi_j$ with
+\begin{equation}
+  \label{eq:5}
+  \frac{W\phi_{j - 1} + \phi_j + W\phi_{j + 1}}{1 + 2W}
+\end{equation}
+With $W = 0.5$ the digital filter approaches zero at $k\Delta x = \pi$. This is
+equivalent to convoluting the result with $\cos^2(\theta / 2)$ where $\theta =
+k\Delta x$. One can apply this $N$ times. Another thing one can do is to use $W
+= -1/6$ to ``compensate'' which takes some of the power we attenuated at high
+$k$ and puts them back.
+
+In relativistic codes there is a nasty instability called the numerical
+Cherenkov instability. Remember our numerical dispersion relation has smaller
+phase/group speed at high $k$. Normally the deviation is not large, however in a
+relativistic simulation the particles can fly faster than the speed of light in
+the medium. What one sees when one simulates a relativistic neutral beam is that
+the beam heats up and stops on the grid. Things that help is to use higher order
+FDTD schemes (e.g.\ 4th spatial order), and it postpones the onset of the
+instability quite a lot. Filtering also helps.
+
+Lets talk a bit about boundary conditions. Simplest boundary condition is
+periodic boundary where we just copy the field from one end to the ghost
+zones of the other end. The other simple condition is perfectly conducting
+walls, which kills tangential $E$ and perpendicular $B$. Another boundary
+condition which is very helpful is the so-called open boundary or absorbing
+layer. One wants particles to freely stream out, and waves not to reflect.
+Usually we simply designate a region of the grid to have a finite conductivity.
+Another way is to use the so-called perfectly matched layer, where we imagine a
+medium with separate conductivities for electric and magnetic field. However
+this only works with vacuum and if particles escape through the layer it will
+charge up. One might need to neutralize this charge density in some way. Another
+way was proposed by Lindman (1975) called transmitting wall. It adjusts the
+$E$ and $B$ fields at the wall to match outgoing waves.
+
+Another thing people implement in codes is called ``moving window''. This means
+the whole simulation box is moving at a high speed (usually at $c$). This is
+useful in beam-plasma interaction study and collisionless shocks. One could also
+inject particles at the boundary, with injector possibly moving.
+
+A quick note about parallelization. We use MPI to decompose the domain into
+subdomains and communicate between them. One might run into trouble with load
+balancing, especially when particles are mostly in one subdomain. In uniform
+plasma problems one is usually okay, but in shocks or reconnection problems this
+can be a big problem. One thing we can do is to have dynamic reconfiguration of
+decomposition. Or one could use some scheme to vary the particle weights in
+dense regions so that one particle represents many.
+
+Beyond the standard electromagnetic PIC, one can add curvilinear coordinates.
+One can add an extra term in the evolution to add radiation loss and emission of
+non-thermal radiation to the particles, e.g.\ radiation reaction force given by
+Landau-Lifschitz, inverse Compton over some external source background, adding
+pair creation and QED effects, GR effects, etc.
+
+Another variation of the theme is hybrid PIC simulations. Since electron scales
+are typically much smaller than ion scales, one can treat electron as a fluid
+and model ions using PIC. See e.g. Lipatov (2002) a book on the method, also
+Kunz's paper (2014) on this topic.
 
 
 
