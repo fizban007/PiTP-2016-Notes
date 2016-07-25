@@ -1,0 +1,311 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+\newcommand{\Jmath}{J}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{Relativistic Astrophysics}
+\author{Charles Gammie}
+\date{July 25, 2016}
+
+\maketitle
+
+\section{Lecture 1 --- Accretion Disks}
+
+\subsection{Child's Garden of Astrophysical Disks}
+
+Here is a (incomplete) list of astrophysical disks
+\begin{itemize}
+\item Galactic disk: spiral/elliptical
+\item Supermassive BH: quasar/Seyfert/LINER/LLAGN/TDE
+\item Stellar mass BH: microquasar/GRB
+\item Neutron star: LMXB/HMXB/GRB
+\item White dwarf: dwarf nova/nova
+\item Protostar: protoplanatory/debris
+\item Planet: protolunar disk/planetary rings
+\end{itemize}
+
+Consider the galaxy NGC 4258. If we zoom in to $~0.1\,\mathrm{pc}$, we see maser
+spots around the central engine. The velocities of these spots fall nicely on a
+Keplerian orbit. The combination of the acceleration, velocity, and angular
+position of these maser spots allows us to measure to mass of the central
+object.
+
+Here let us introduce the first dimensionless parameter of a thin disk
+\begin{equation}
+  \label{eq:1}
+  \frac{H}{R}\ll 1, \quad H = \frac{c_s}{\Omega} \propto T^{1/2}
+\end{equation}
+For this system this parameter is $\sim 10^{-3}$. This is an example of a thin
+disk. The disk of NGC 4258 is not a flat disk, since one can see warps following
+the maser spots. The disk is actually made of rings at the positions of the
+masers.
+
+This particular disk is relatively far away from the object, and the disk is
+heated due to the radiation from the central object.
+
+The next example is the center of our galaxy. We know that the accretion flow
+near $\sim 10 r_{g}$ emits synchrotron radiation which is the target of the
+Event Horizon Telescope (EHT). The mean free path of Coulomb scattering in Sgr
+A* is very large, so the plasma is almost collisionless. This allows us to
+introduce the second number
+\begin{equation}
+  \label{eq:2}
+\kappa_n = \frac{\lambda_{mfp}}{R}
+\end{equation}
+which is about $10^5$ for this system.
+
+The next example is the HL Tau. This is a cold disk of protoplanetary disk. At
+$50\,\mathrm{au}$ the temperature is less than $100\,K$. Here we introduce the
+third number which is the magnetic Reynolds number
+\begin{equation}
+  \label{eq:3}
+  \mathrm{Re}_M = \frac{c_s H}{\eta}
+\end{equation}
+In regions of this system that we can measure with ALMA, this number is less
+than 1.
+
+The last number we introduce is
+\begin{equation}
+  \label{eq:4}
+  Q = \frac{c_s\Omega}{\pi G \Sigma}
+\end{equation}
+where $\Sigma$ is the surface density of the disk. When this number is less than
+one, self gravity becomes important.
+
+The last example is the moon. When people look at the moon most people do not
+see a disk. The theory of the formation of the moon involves an impact on earth,
+throwing some mass from the earth which forms a disk around it. This is a system
+where the magnetic Reynolds number might play a role.
+
+One more system we want to mention is the SS Cyg which is a Cataclysmic
+variable, formed by a massive star overflowing its Roche lobe, feeding a disk
+around its companion which is a WD. We have observed this system since 1896 and
+it alternates between a quiescent state and an active state. This system may
+have a low magnetic Reynolds number at quiescent state, but has a high magnetic
+turbulence during its outbursts.
+
+\subsection{Disk Evolution}
+
+Disks are a class of special objects in astrophysics. The angular momentum is
+conserved, but its kinetic energy is easily converted to thermal energy due to
+various instabilities in the disk, and eventually radiated away. Therefore
+understanding the disk evolution is all about understanding the evolution of
+angular momentum.
+
+In a thin disk, dynamical equilibrium is reached in a dynamic timescale $\Delta
+t \sim \Omega^{-1}$, where
+\begin{equation}
+  \label{eq:5}
+  \Omega = \left( \frac{GM}{R^3} \right)1/2 + O \left( \frac{H}{R} \right)^2
+\end{equation}
+However it is possible for there to be long living excitations which live in
+circular orbits, in addition to tilts and warps in the disk.
+
+Thermal equilibrium is reached when $Q^+ \sim Q^{-}$, when heating rate balances
+the cooling rate. The time scale is
+\begin{equation}
+  \label{eq:6}
+  \Delta t \sim \Sigma c_s^2 / Q^+ \sim (\alpha\Omega)^{-1}
+\end{equation}
+where the $\alpha$ parameter is very important and it describes the intensity of
+turbulence in the disk, and the above equation can be taken as the definition.
+It relates the thermal time scale to the dynamical time scale. Its value,
+usually at $10^{-2}$ means that the thermal time scale is much longer than the
+dynamical time scale.
+
+The last time scale is the inflow equilibrium $\dot{M} \sim \mathrm{const}$. The
+time scale is
+\begin{equation}
+  \label{eq:7}
+  \Delta t \sim \frac{M_\mathrm{disk}}{\dot{M}} \sim (\alpha\Omega)^{-1}\left( \frac{R}{H} \right)^2
+\end{equation}
+which is again longer by a factor of the scale height squared.
+
+Lets write down the disk evolution equation
+\begin{equation}
+  \label{eq:8}
+  \partial_t\Sigma = \frac{2}{r}\partial_r \left( \frac{\Omega}{r\kappa^2}\partial_r(r^2\Omega_{r\phi}) - \frac{\Omega}{\kappa^2}\tau \right) + \dot{\Sigma}_\mathrm{ext}
+\end{equation}
+where $\Sigma$ is the surface density, $\Omega$ the orbital frequency, $\kappa$
+the epicyclic frequency which is similar to $\Omega$, $W_{r\phi}$ is the shear
+stress, $\tau$ is connected to external torques per area, and finally
+$\dot{\Sigma}_\mathrm{ext}$ is the mass gain/loss from infall or from wind loss.
+The full derivation of this equation is left as an exercise. The hint is to
+start from the angular momentum conservation equation together with conservation
+of mass. Another hint is that
+\begin{equation}
+  \label{eq:9}
+  \frac{d}{dr}j = \frac{r\kappa^2}{2\Omega}
+\end{equation}
+where $j$ is the specific angular momentum.
+
+The standard model for disks is the $\alpha$ disks. It was introduced by
+(Shakura \& Sunyaev 1973) and (Linden-Bell \& Pringle 1974). It adopts simple
+scaling argument for diffusion of angular momentum by turbulence, by just
+modeling the turbulent viscosity
+\begin{equation}
+  \label{eq:10}
+  \nu \sim \alpha c_s H
+\end{equation}
+In classical $\alpha$ disk models one ignores external torques, infall/winds,
+etc. Thus one throws away the last two terms in the disk equation, with only the
+term with $W_{r\phi}$ surviving.
+
+In the $\alpha$ disk model we assume the disk is thin and Keplerian $\Omega
+\approx (GM/r^3)^{1/2}$. We also assume vertical equilibrium $H \sim
+c_s/\Omega$. The opacity is assumed to be related to temperature and density $\kappa \sim
+\kappa_0\rho^aT^{b}$. We have a prescription of vertical integration of the
+density $\Sigma \sim 2\rho H$, which is a crude integral. We also estimate the
+optical depth to be $\tau \sim \Sigma \kappa / 2$. The surface temperature is
+determined by the fact that heating by viscous processes $F = \sigma
+T_\mathrm{eff}^4 \sim (9/8)\Sigma \nu \Omega^2$, where $T_\mathrm{eff}^4 \sim
+\sigma T^4/\tau$. Finally in the steady state $\dot{M} = 3\pi \Sigma \nu$.
+
+As an example, consider a steady state disk around a stellar mass BH. In the
+inner zone, radiation pressure is much larger than the gas pressure, and
+electron scattering dominates the opacity. We can find that
+\begin{align}
+  T &\sim 4.3\times 10^7 \alpha^{-1/4}m^{-1/4}x^{-3/8}\,K \\
+  \Sigma &\sim 0.4 x^{3/2}\alpha^{-1}\dot{m}^{-1}\,\mathrm{g/cm^2} \\
+  H/r &\sim 10 \dot{m}x^{-1}
+\end{align}
+
+Now lets come back to the disk evolution equation and ask what are $W_{r\phi}$,
+$\tau$, and $\Sigma_\mathrm{ext}$. Part of the answer only lies in the global
+analysis of turbulence in the disks.
+
+\subsection{Turbulence in Disks}
+
+In $\alpha$ disk model the turbulent diffusion of angular momentum is simply
+postulated. Possible sources of turbulence include magnetorotational instability
+(MRI), gravitational instability, zombie vortex instability, subcritical
+baroclinic instability, and vertical shear instability. The last three are
+related to instabilities in fluids. The zombie vortex instability is generated
+due to vortices generated in the disk sharing angular momentum through sound
+waves. The subcritical baroclinic instability is loosely related to the
+baroclinic instability that drives weather. The vertical shear instability is
+when shearing motion is faster than orbital motion and driving the flow of
+angular momentum at sound speed.
+
+We will focus on the MRI instability (Balbus \& Hawley 1991). This is due to
+local, linear instability of weakly magnetized disks driven by exchange of
+angular momentum. The condition of the instability does not involve boundary
+conditions and occur in a localized region of the disk, and can be treated using
+the WKB approximation.
+
+We will start with a simple mechanical analogy where 2 masses connected by a
+spring are in orbit around a central body. The orbital frequency is given by
+Keplerian motion $\Omega^2 = GM/R^{3}$. The masses can be thought as fluid
+elements, and spring can be a model of magnetic field line tension which
+provides restoring force. We denote the frequency of the spring as $\gamma$.
+
+Lets setup $x$-$y$ coordinates for the orbital motion where $x$ is in radial
+direction, and $y$ points opposite to the orbital motion. We know that
+\begin{equation}
+  \label{eq:11}
+  \ddot{x} = -2\Omega \dot{y} + 3\Omega^{2}x - \gamma^2x
+\end{equation}
+The first term is the Coriolis force, and the second combines the centrifugal
+force and the gravitational force in an expansion, and the third term is the
+spring force. The second equation is
+\begin{equation}
+  \label{eq:12}
+  \ddot{y} = 2\Omega \dot{x} - \gamma^{2}y
+\end{equation}
+
+As a first go, lets set $\gamma = 0$ and assume $x$ and $y$ scale with
+$e^{-i\omega t}$, the equations become
+\begin{align}
+  \label{eq:13}
+  -\omega^2x &= -2\Omega(-i\omega) y + 3\Omega^2 x \\
+  -\omega^2y &= 2\Omega(-i\omega)x
+\end{align}
+This simply gives $\omega^2 = \Omega^2$ which means that the natural modes
+oscillate at the orbital frequency.
+
+Now lets add the $\gamma$ term, and we get
+\begin{align}
+  \label{eq:14}
+  -\omega^2x &= -2\Omega(-i\omega) y + 3\Omega^2 x - \gamma^2x \\
+  -\omega^2y &= 2\Omega(-i\omega)x - \gamma^2y
+\end{align}
+And solving the dispersion relation gives
+\begin{equation}
+  \label{eq:14}
+  \omega^4 - \omega^2(\Omega^2 + 2\gamma^2) + \gamma^2(\gamma^2 - 3\Omega^2) = 0
+\end{equation}
+Notice that there is a zero solution condition when $\gamma^2 = 3\Omega^2$, and
+it is a transition from positive to negative frequency square. If we plot
+$\omega^2/\Omega^2$ vs $\gamma^2/\Omega^2$, there are two sets of roots. One is
+simply spring motion. The other starts with $\omega^{2} = 0$, and between
+$\gamma^2 = 0$ and $3\Omega^2$ we have $\omega^2 < 0$ where there is an
+instability. The fastest growing mode of the instability is at
+$\gamma^2/\Omega^2 = 15/16$ and $\omega^2/\Omega^2 = -9/16$.
+
+This is directly analogous to an MHD problem. Lets zoom in on the disk and
+assume it is penetrated by a weak vertical magnetic field. This instability is
+related to the magnetic instability where the field is bent, and the fluid
+element above and below are coupled by Alfven waves. In this case we have
+\begin{equation}
+  \label{eq:15}
+  \gamma^2 \to (\mathbf{k}\cdot \mathbf{v}_A)^2
+\end{equation}
+
+Lets list some facts about MRI linear theory. The ideal fluid instability only
+requires $d\Omega^2/dr < 0$. The maximum growth rate is $(3/4)\Omega$ for
+Keplerian motion. The fastest growing mode is given above. We know that there is
+a local instability when there is vertical field, but a local instability also
+occurs even when there is only toroidal field.
+
+However linear theory doesn't tell us what happens in the regime when linear
+growth saturates. To study this regime we need simulations. In simulations
+people have used local or global setups. There are models with explicit small
+dissipation terms, or ILES which self-consistently evolves turbulence cascade
+from the scale where energy is injected down to the scale of dissipation. There
+are also isothermal models with equation of state $P = c_s^2\rho$, or one can
+use energetically self-consistent equation of state.
+
+Some simulations were shown\dots
+
+Simulations of MRI told us a few things. In 2D MRI leads to turbulence and
+$\alpha$. We know that in 2D MRI does not converge, so $\alpha$ depends on
+resolution. In 3D MRI also leads to turbulence and $\alpha$, but sometimes it
+does converge. We know that it converges when explicit dissipation is used.
+There are issues with ILES models with unstratified shearing boxes. We also
+learned that $\alpha$ depends on many parameters. It depends on the local height
+$z$, and it increases away from the central plane. It also depends on the
+magnitude of the vertical magnetic field that threads the disk $\left<
+  B_z\right>$. When the vertical magnetic field increases the viscosity also
+increases. It depends on the magnetic Reynolds number and $\mathrm{Pr}_{M} =
+\nu/\eta$.
+
+\subsection{Current Problems in Disk Theory}
+
+Ran out of time\dots
+
+\end{document}
