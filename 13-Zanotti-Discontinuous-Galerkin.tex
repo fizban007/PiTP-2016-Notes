@@ -1,0 +1,211 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+\newcommand{\Jmath}{J}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{Discontinuous Galerkin Methods for Hyperbolic PDEs}
+\author{Olindo Zanotti}
+\date{July 26, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+\subsection{Basic Terminology}
+
+Lets refresh some terminologies. Finite difference methods evolve in time the
+point-values of the solution. Finite volume methods evolve in time the cell
+averages of the solution, which may allow one to e.g.\ go to unstructured
+meshes. Discontinuous Galerkin methods evolve in time the so-called degrees of
+freedom of the solution, i.e.\ the expansion coefficients with respect to given
+basis functions
+\begin{equation}
+  \label{eq:1}
+  U_h(x, t) = \sum_{l=0}^M\psi_l(x) \hat{U}^n_l(t)
+\end{equation}
+
+\subsection{Recap about numerical methods for hyperbolic PDEs}
+
+Lets assume a system of PDEs in conservative form
+\begin{equation}
+  \label{eq:2}
+  \frac{\partial U}{\partial t} + \nabla\cdot F(U) = S
+\end{equation}
+where $U$ is the vector of so-called conserved quantities, and $F(U)$ is a
+non-linear flux tensor which depends on the state $U$. It can usually be written
+as
+\begin{equation}
+  \label{eq:3}
+  \partial_tU + A\cdot \nabla U = S
+\end{equation}
+
+For the first form, the system of PDEs can be solved through conservative
+numerical schemes. The second form requires different approaches, like
+path-conservative numerical schemes.
+
+Hyperbolic PDEs are everywhere in physical sciences. One can even argue that all
+physical systems are hyperbolic. Examples are hydro, MHD, GR, etc.
+
+Lets refresh our memory about the finite volume method. We integrate the
+hyperbolic equation across the cell, then integrate over the time. Then we use
+the volume averages to replace the integrals and write down the evolution of the
+averages. To evolve these averages, we evolve a Riemann problem at every
+contact point between the cells. We don't usually analytically solve Riemann
+problems at every interface, but approximate them using e.g.\ characteristics of
+the PDE system.
+
+A numerical scheme is called a conservative scheme if it is based on the
+conservative form of the PDEs. More specifically if the numerical flux depends
+on the values taken by $U$ on the neighboring cells, and the flux function
+$\mathcal{F}$ reduces to the true physical flux int he case of constant flow
+(just a consistency check).
+
+There are two theorems about conservative numerical schemes. Conservative
+numerical schemes, if convergent, converge to the weak solution of the problem
+(Lax \& Wendroff 1960). Non-conservative numerical schemes don't\dots
+
+About weak solutions. A function $U$ is called a weak solution of the
+conservative equation if it satisfies the so-called weak formulation for all
+functions $\psi$ which are continuously differentiable functions with compact
+support.
+
+In Godunov's first order method the left and right sides of the Riemann problem
+are the constant cell averages. To go beyond the first order, lets define the
+local error $E_{j}$ which is the difference between the exact and numerical
+solutions at $x_j^n$. The order of the accuracy of the scheme can be defined as
+$p_j = \mathrm{min}(m_j, n_j)$ where
+\begin{equation}
+  \label{eq:4}
+  E_j = C_1\Delta x^{m_j} + C_2\Delta t^{n_j}
+\end{equation}
+However when there is a discontinuity the error is always 1st order.
+
+A theorem by Godunov says that A linear (i.e.\ with constant coefficients) and
+monotonicity-preserving scheme is at most first-order accurate.
+Monotonicity-preserving means that if $U_j^n \geq U_{j+1}^n$ implies that
+$U_j^{n+1} \geq U_{j+1}^n$. This means that to go to higher order we need to
+sacrifice one of them, and we sacrifice linearity.
+
+For example we have the Total Variation Diminishing (TVD) schemes where we
+provide a piecewise linear reconstruction of $U_{j}(x) = U_j + \sigma_j(x -
+x_j)$ inside each cell. The nonlinearity is hidden in the constant slope
+$\sigma_j$, e.g.\ the minimod slope limiter. Other non-linear schemes can also
+be constructed.
+
+Up to the second order, finite difference schemes and finite volume schemes are
+essentially the same.
+
+One more method is the method of lines. We can regard the flux equation as a
+system of ODEs over time which can be solved through the multi-step Runge-Kutta
+method. This is a family of methods with different predictor mid steps. There is
+also an implicit version called IMEX Runge-Kutta which is for stiff equations.
+
+Numerical schemes are all limited by the CFL condition which is a first and
+necessary condition for stability. From a physical point of view the CFL
+condition ensures that propagation speed of any physical perturbation is always
+smaller than numerical speed defined as $\lambda_N = \Delta x/\Delta t$.
+
+\subsection{Discontinuous Galerkin Methods}
+
+DG methods can be considered as numerical methods for the weak formulation of
+the equations. Once implemented DG methods reach arbitrary order of accuracy in
+space by simply acting on the degree of the expansion polynomials. They allow
+for dynamic refinement of mesh and change of polynomial degree. They incorporate
+Riemann solver, and they can be easily extended to general unstructured meshes.
+The DG method converges exponentially with the order of polynomial used.
+
+The cons of DG method involves a change of philosophy. They are constrained by a
+more severe CFL condition than finite volume, and one needs to deal with
+oscillations at discontinuities.
+
+Assume a system of PDEs are written in the conservative form. We expand the
+solution in polynomials as \eqref{eq:1}. We multiply the equation with a basis
+polynomial $\psi_k$ and integrate
+\begin{equation}
+  \label{eq:9}
+  \int_{l_i}\psi_k\frac{\partial U_h}{\partial t}\,dx + \int_{\partial l_i} \psi_kF(U_h)\cdot n\,dS - \int_{l_i}\nabla\psi_k\cdot F(U_h)\,dx = 0
+\end{equation}
+
+
+The CFL condition for DG schemes is, according to (Krivodonova and R.Qin 2013)
+\begin{equation}
+  \label{eq:5}
+  \Delta t < \frac{1}{(2M + 1)}\frac{h}{\left| \lambda_\mathrm{max} \right|}
+\end{equation}
+while according to (Gottlieb and Tadmor 1991, Radice and Rezzolla 2011) it
+should be
+\begin{equation}
+  \label{eq:6}
+  \Delta t < \frac{1}{(M + 1)^2}h
+\end{equation}
+
+There are two ways to go around this condition. One is to simply use a very
+coarse grid $h$. The second way is local time-stepping where each cell is
+updated in time at its own maximum stable time-step.
+
+A modal (hierarchical) basis is a set of basis polynomials of maximum degree $M$
+with degree from 0 to $M$. The Legendre polynomials is a example of such a set.
+Another possibility is nodal basis. It is a basis of $M + 1$ polynomials of
+order $M$. We consider a reference coordinate $\xi\in [0, 1]$ defined between
+the grid points. The nodes are zeros of the Gauss-Legendre quadrature. The
+polynomials $\psi_l(\xi)$ are Lagrange interpolation polynomials. Having
+selected these nodal points we can compute integrals through Gaussian quadrature
+\begin{equation}
+  \label{eq:7}
+  \int_0^1g(\xi)d\xi = \sum_0^M\omega_k\xi_k
+\end{equation}
+
+The discontinuous Galerkin scheme is $L_2$ stable, i.e.\
+\begin{equation}
+  \label{eq:8}
+  \int_{\Omega} \partial_t \left( \frac{U^2}{2} \right)\,dx \leq 0
+\end{equation}
+This property makes DG scheme very robust for e.g.\ high vorticity problems.
+However it does not prevent oscillations at discontinuities.
+
+\subsection{Runge-Kutta DG}
+
+We substitute \eqref{eq:1} into the discrete Galerkin equation and get a system
+of ODEs in time for the degrees of freedom. This system can be solved through a
+standard Runge-Kutta discretization in time.
+
+To first order the RKDG scheme coincides with a first-order finite-volume
+scheme. The values of the fluxes at the cell borders can be obtained by solving
+a Riemann problem. In principle the solution of such Riemann problems does not
+require any spatial reconstruction at the interface between cells. The
+efficiency of RK time discretization decreases if the order of accuracy is
+higher than 4: the number of intermediate stages becomes larger than the formal
+order of accuracy, the so called ``Butcher barrier''.
+
+\section{Lecture 2}
+
+\subsection{ADER DG schemes}
+
+\subsection{Numericl Tests}
+
+\end{document}
