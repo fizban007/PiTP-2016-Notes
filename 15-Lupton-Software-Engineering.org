@@ -1,0 +1,20 @@
+#+TITLE: Software Engineering
+#+AUTHOR: Robert Lupton
+
+
+* Need for version control
+
+** Copy
+One could simply cp to a back up directory...
+#+BEGIN_SRC bash
+mkdir Backups
+cp -b hello.c Backups
+cp -b hello.c Backups
+cp -b hello.c Backups
+#+END_SRC
+
+** Or we could use Git
+#+BEGIN_SRC bash
+git init
+git add .
+#+END_SRC
