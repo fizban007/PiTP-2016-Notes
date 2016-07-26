@@ -1,0 +1,250 @@
+\documentclass[letterpaper, 11pt]{article}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{*}{mps}{*}{} 
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{enumerate}
+% \usepackage{mystyle}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{fancyheadings}
+\usepackage{tensor}
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+%\usepackage{fullpage}
+\usepackage[left=0.75in, top=1.25in, right=0.75in, bottom=1.25in]{geometry}
+\newcommand{\lambdabar}{{\mkern0.75mu\mathchar '26\mkern -9.75mu\lambda}}
+\newcommand{\Jmath}{J}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\title{An Introduction to Cosmic Rays}
+\author{Ellen Zweibel}
+\date{July 26, 2016}
+
+\maketitle
+
+\section{Lecture 1}
+
+Why should we study cosmic rays? There are two parts of motivations. On the
+collective side we are concerned about the totality of cosmic rays: we want to
+understand better how energy is partitioned between thermal gas, magnetic
+fields, and cosmic rays in the ISM/ICM. We want to understand how cosmic rays
+interact with thermal gas. On the particle side we want understand how cosmic
+rays are produced and the energy spectrum.
+
+The plan of the lecture follows this bifurcation. We will talk about he particle
+picture and the fluid picture. Then we will talk about diffusion which will lead
+to a self-consistent diffusion model with classical cosmic ray hydrodynamics.
+There is also the generalized cosmic ray hydrodynamics. Both will lead to the
+discussion of applications to galactic winds.
+
+Some early history of cosmic ray astrophysics. In 1912 Hess showed the source of
+atmosphere ionization are cosmic. The ionization increases with height, which is
+an evidence that the source is not terrestrial. In 1927 Clay showed ionizing
+flux is latitude dependent, suggesting ``rays'' are charged particles. In 1934
+Baad and Zwicky proposed that cosmic rays are from supernovae. In 1949 Hall and
+Hiltner observed galactic magnetic field, and in the same year Fermi proposed the
+acceleration mechanism.
+
+One way to detect cosmic rays is through Cherenkov detectors in large water
+banks. The energy spectrum is a broken power law
+\begin{equation}
+  \label{eq:1}
+  \begin{split}
+    N(E) &\sim E^{-2.7}, \quad E_\mathrm{PeV} < 3 \\
+    &\sim E^{-3.0}, \quad 3 < E_\mathrm{PeV} < 100
+  \end{split}
+\end{equation}
+The energy density is about $1\,\mathrm{eV/cm^{3}}$ which is in equipartition
+with the magnetic and thermal turbulent energy density of interstellar gas.
+Most of the pressure comes from $\sim \mathrm{GeV}$ particles.
+
+The composition of cosmic rays is similar to solar system composition, but they
+are rich in Li, Be, B. This can be explained by collisions of C, N, O cosmic
+rays with interstellar gas which shatters them to smaller atoms. Cosmic rays are
+also not enriched in r-process elements which suggests they are not direct
+ejecta of SNe.
+
+We can use $\tensor[^{10}]{\mathrm{Be}}{}$ to date the confinement time of
+cosmic rays because it is an unstable isotope with half life of about a million
+years.
+
+One can't talk about cosmic rays without talking about interstellar magnetic
+field. We compute the galactic magnetic field by measuring the Faraday
+rotation of the ($\sim 38000$) extragalactic sources. There is a coherent and
+nearly azmuthal component of the $B$ field nearly tangent to the galactic plane.
+The total field is about $\sim 5\,\mathrm{\mu G}$.
+
+If we separate the spectrum element by element, it becomes really complicated,
+and every element has different features. This probably represents some joint
+effect of acceleration and propagation.
+
+The distribution of cosmic rays arriving on earth is highly isotropic to better
+than $0.1\%$, and it becomes more anisotropic at energies higher than about
+$10^{16}\,\mathrm{eV}$.
+
+Remote sensor data shows that dense molecular clouds are sources of
+$\gamma$-ray emission. One can get more quantitative by fitting the $\gamma$-ray
+spectrum and radio spectrum of other galaxies. By fitting the radio and
+$\gamma$-ray spectra one can test the assumption of equipartition at various
+different galaxies. Equipartition holds in the milky way, but it can't keep up
+in galaxies with higher and higher star formation rates.
+
+There is a tight correlation between far-infrared radio luminosity and
+synchrotron luminosity, which seems to hold at least to $z \sim 2$.
+
+Lets draw some inferences from the above. From light element abundances we can
+infer about $2.6\times 10^7\,\mathrm{yr}$ galactic confinement time for cosmic
+rays. Similar processes occur in other galaxies. Source spectrum is about
+$E^{-(2.0-2.2)}$, and source power is equivalent to about $10\%$ of SN energy
+input.
+
+What are we going to do with all these? From particle point of view we want to
+explain the mechanism of acceleration and understand how propagation affects
+them. From the collective view we want to understand how they modify the
+structure and energetics of the ambient medium.
+
+If we look at the particle orbits in galactic magnetic field, one can find that
+Larmor radius is $r_L\sim 10^{12}\,\mathrm{cm}$. We can't really put these
+cosmic ray particles into our simulations because the scale is too tiny. We need
+to develop a statistical picture for transport and diffusion in phase space, and
+this will help us developing a fluid picture for global feedback.
+
+The elements of field-particle interaction include many topics, including
+gyromotion, drifts, etc. For example grad-B drift will move particles along the
+$B$ field lines, and it is most effective when the $B$ field varies at the same
+length scale as the particle gyro radius. There is also magnetic mirroring,
+where we have an adiabatic invariant $\mu = p_{\perp}^2/B$. There is
+gyroresonant scattering. Since particle orbits follow field lines and short
+wavelength fluctuations of the field lines average out. However if the
+Doppler shifted fluctuation frequency is similar to the gyrofrequency of the
+particle, its motion will grow in amplitude. Finally there is Landau resonance,
+which is the condition where $\omega = k_{\parallel}v_{\parallel}$. Resonant
+particles can exchange energy with a wave through parallel electric field, and
+this is the mechanism for Landau damping. Wave dissipation by this mechanism is
+sometimes also called transit damping.
+
+An example of cross-field transport is (Desiati \& EZ 2014), or
+(arXiv:1402.1475).
+
+Can we quantify this transport? We define the running diffusion tensor
+\begin{equation}
+  \label{eq:2}
+  D_{ij}(t) = \frac{1}{2N}\sum_{n=1}^N\frac{\left[ x_{i,n}(t) - x_{i,n}(0) \right][x_{j,n}(t) - x_{j,n}(0)]}{\Delta t}
+\end{equation}
+the diffusivity in the parallel and perpendicular directions are quite
+different:
+\begin{equation}
+  \label{eq:3}
+  \kappa_{\parallel} = \left\langle \frac{v_{parallel}^2}{\nu} \right\rangle = \frac{v^2}{3\nu} ,\quad \kappa_{\perp} = \kappa_{\parallel} = \frac{r_g^2\nu}{3}
+\end{equation}
+
+I fell asleep\dots Details plz refer to the paper.
+
+Next we will talk about cosmic ray spectrum and 2nd order Fermi acceleration,
+derive a Fokker-Planck equation and a transport equation.
+
+\subsection{Analytics}
+
+Lets first talk about Fermi's argument. Suppose particles are injected into our
+system at a constant rate and they can be lost statistically. Lets denote the
+number of cosmic ray particles that enter our system in a time period $dt$ by
+$\tilde{n}(t)dt = \tilde{n}_0e^{-t/\tau_L}dt$, where $\tau_L$ is a time scale of
+particle loss. If we know how much energy is inserted at different times, we can
+invert that and define
+\begin{equation}
+  \label{eq:4}
+  n(E)dE = \tilde{n}(t(E))dt,\quad n(E) = \tilde{n}(t(E))\frac{dt}{dE}
+\end{equation}
+
+Lets suppose that $dE/dt = E/\tau_\mathrm{accel}$, which is some acceleration
+law. Then this equation is very easy to solve
+\begin{equation}
+  \label{eq:5}
+  E = E_0e^{t/\tau_\mathrm{accel}},\quad t(E) = \tau_\mathrm{accel}\ln \left( \frac{E}{E_0} \right)
+\end{equation}
+If we implement this into our distribution equation we get
+\begin{equation}
+  \label{eq:6}
+  n(E) = \frac{\tilde{n}_0\tau_\mathrm{accel}}{E_0}\left( \frac{E}{E_0} \right)^{-(1 + \tau_\mathrm{accel}/\tau_L)}
+\end{equation}
+This is a power law spectrum, and the spectrum steepness is related to the
+relation between acceleration time scale and loss time scale.
+
+In this model the oldest cosmic rays are the most energetic, however in our data
+we saw that energetic cosmic rays have less confinement time, so they are
+younger. This means data is against this kind of distributive model.
+
+To make this kind of spectrum work with observation we need $\tau_\mathrm{accel}
+\sim \tau_L$. There are so many ways to accelerate particles and so many
+ways to lose particles, how do we make sure this is true?
+
+Fermi considered the so-called ``magnetic clouds''. These clouds move back and
+forth at random at velocity $v$, and particles can be trapped in them, and can
+be reflected off them. When particles are reflected at a moving mirror they can
+either gain or lose energy. Consider a head-on collision, the particle with
+momentum $p$ colliding a cloud with velocity $v$, then $\Delta E = +2pv$,
+however if particles are overtaking the cloud, then $\Delta E = -2pv$. If the
+motions are all random then there is no net acceleration. However if we denote
+the average separation of the clouds as $L$, then the frequency of head-on
+collisions will be
+\begin{equation}
+  \label{eq:7}
+  \nu = \frac{c + v}{L}
+\end{equation}
+whereas those overtaking collisions will be $\nu = (c - v)/L$. Therefore if we
+sum over many collisions the net gain of energy will be
+\begin{equation}
+  \label{eq:8}
+  \frac{dE}{dt} = 2pv \left( \frac{c + v}{L} - \frac{c - v}{L} \right) = \frac{4pv^2}{L} = \frac{4Ev^2}{c^2L}
+\end{equation}
+This has exactly the same form as the one assumed above, which leads to a power
+law spectrum. The acceleration time scale is about $\tau_\mathrm{accel} \sim
+c^2L/v^2c$. What is this number? In galaxies $c^2/v^2 \sim 10^9$, the separation
+between the clouds is around $L\sim 3\times 10^{20}\,\mathrm{cm}$. Putting
+everything together the acceleration time would be $\tau \sim
+10^{19}\,\mathrm{s} \sim 3\times 10^{11}\,\mathrm{yr}$. We also know that the
+loss time is about $\tau_L\sim 2.6\times 10^7\,\mathrm{yr}$. This gives
+extremely steep spectrum which does not work at all. This is called second order
+Fermi acceleration because $v^2$ shows up in the time scale.
+
+Lets consider diffusion. We define the pitch angle of scattering
+\begin{equation}
+  \label{eq:9}
+  \mu = \frac{\mathbf{p}\cdot \mathbf{B}}{pB}
+\end{equation}
+We are going to derive a diffusion in $\mu$ space, and show that it leads to
+diffusion in $x$ space and apply it to shock acceleration and worry about how to
+make it self-consistent.
+
+We are going to derive a probability function
+\begin{equation}
+  \label{eq:10}
+  P(\mu, \Delta \mu) = \text{Probability that a particle with $\mu$ is scattered by $\Delta \mu$ in time $\Delta t$}
+\end{equation}
+And we normalize this function such that integrated over $\Delta \mu$ it gives
+some number $\xi$. Integrating this we have a distribution function $f(\mu, t)$
+which is our cosmic ray distribution function (which also depends on $x$ and
+$t$). We have
+\begin{equation}
+  \label{eq:11}
+  f(\mu, t + \Delta t) = \int f(\mu - \Delta \mu, t)P(\mu - \Delta \mu, \Delta \mu) d\Delta \mu
+\end{equation}
+which simply means that particles at $t + \Delta t$ with $\mu$ can come from
+various ``kicks'' of different $\Delta \mu$. We are going to expand both sides,
+next time.
+
+
+
+\end{document}
