@@ -15,6 +15,10 @@ Disclaimer 2: These notes are not intended to replace the original notes/slides
 from the speakers! I like to read these and the original notes/slides together
 to get a better idea what happened during the lecture.
 
+Comment/Rant: It's so much harder to take notes when the speaker uses slides,
+than when he uses chalk & board. The slides runs by so fast that there is
+almost no time to write down the equations...
+
 #Useful links
 -------------
 
