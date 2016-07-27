@@ -28,13 +28,13 @@
 
 \begin{document}
 
-\title{Black Hole Magnetospheres}
+\title{Black Hole and Jets}
 \author{Alexander Tchekhovskoy}
 \date{July 21, 2016}
 
 \maketitle
 
-\section{Lecture 1}
+\section{Lecture 1 --- Jet Acceleration}
 
 Lets start with an overview of where do we see black holes in the universe.
 There are supermassive black holes with $M\sim 10^{6-10}M_{\odot}$, which sit in
@@ -84,7 +84,7 @@ In reality, the black hole is very simple. It has only two hairs: mass and spin.
 It knows nothing adbout the magneic flux. However, external accretion can
 provide magnetic flux threading the black hole event horizon.
 
-\dots
+I fell asleep\dots
 
 \subsection{Jet Acceleration}
 
@@ -212,6 +212,79 @@ mean? One possibility is that GRB jets are unconfined after a certain radius
 which could be the surface of a star. When the magnetic field lines are
 unconfined they can expand and create bigger pressure gradient.
 
+
+
+
+
+
+\section{Lecture 2 --- Disk Jet Connection}
+
+We are interested what sets the disk-jet connection and what comes out of it. We
+want to understand as much as possible what is happening at the central engine.
+Important questions include how is $\dot{M}c^2$ related to jet acceleration, how
+do disks and jets emit, what can we learn from the spectra and images on
+small/large scales. We also want to explore what is a health jet diet, i.e.\ how
+to kill a jet.
+
+When are jets produced in real systems? Jets are produced TDEs, ultra-luninous
+X-ray sources, and GRBs. In these events $\lambda = L/L_\mathrm{edd} \sim 1$. In
+these systems the disk is thick and temperature is high. A lot of the radiation
+is absorbed by the disk, and only a fraction comes out.
+
+They are also produced in Quasars, X-ray binaries, and TDEs, with $\lambda \sim
+0.01$. The disk retain its ability to cool and the disk can be razor thin.
+$\alpha$ viscosity models is good for this kind of disks. The photons can escape
+easily from the disk.
+
+If we reduce $\lambda$ even lower to $10^{-5}$, the flow becomes dilute, and we again have a
+thick disk because they can't radiate photons efficiently. This applies to
+low-luminosity AGN and X-ray binaries.
+
+Fender+ (2004) plotted optical hardness together with intensity (turtlehead
+diagram). In the low luminosity extreme the radiation spectrum is very flat as a
+power law, with very hard slope. With higher accretion rate it becomes brighter
+and at some point it start to transition to a soft spectrum. When the flow comes
+towards the soft state it will cross the so-called jet line, the black hole jet
+start to emit blobs, and we call this transient jets. In the soft state there is
+no jet, and the disk is razor thin and optically thick. Fender+ (2010) looked at
+the correlation between BH spin and the outflow and they didn't find any.
+However there is a correlation between the BH spin and transient jets.
+
+How do we even measure the BH spin? There are two major methods, both relying on
+measuring the ``hole'' in the center of the disk inside the ISCO. If the black
+hole is rotating retrograde then the hole will become larger, and if the for
+prograde rotation the hole shrinks. The area of the hole will change by a factor
+of about 100 from smallest to largest. One method is called continuum fitting,
+and the other method is iron line method. In the second one one fits the iron
+line emitted from the disk.
+
+What sets the jet power? We have magnetic flux $\Phi \sim B r_{g}^2$, and the
+gravitational radius $r_{g} = GM/c^2$. The jet power is approximated as
+\begin{equation}
+  \label{eq:17}
+  P_j \sim \Phi^2(a / r_{g})^2 = k\Phi^2
+\end{equation}
+
+I fell asleep again\dots Some ``put money into blackhole get more money back''
+thingy. MAD takes energy and angular momentum from the black hole and put them
+into the jet, it also slows down BHs to a halt. What is MAD?
+
+Now we want to talk about can jets die. At some point in time of simulation we
+turn on efficient radiative cooling. The disk collapses and breaks up into thin
+filaments. However the large scale magnetic flux only changes by a factor of a
+few, but the mass accretion rate increases to compensate, and the net energy
+flow is about the same.
+
+How strong is $B$ in Blazars? We can measure $B$ in the jet using the core
+structure. The core is where the jet becomes transparent to its own synchrotron
+radiation $\tau_{\nu}\sim 1$. At higher $\nu$ the core will shift inward
+depending on the field strength
+\begin{equation}
+  \label{eq:18}
+  B\propto (dr_\mathrm{core})^{3/4}
+\end{equation}
+So one could use this to measure $B$ by looking at the size of the core at two
+different frequencies. By the way this is a nature paper.
 
 
 
