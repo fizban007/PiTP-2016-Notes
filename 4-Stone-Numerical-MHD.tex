@@ -33,7 +33,7 @@
 
 \maketitle
 
-\section{Lecture 1 - Astrophysical MHD}
+\section{Lecture 1 --- Astrophysical MHD}
 
 I will mainly talk about one single class of numerical method for MHD, which is
 finite volume method. Link to the \href{http://www.astro.princeton.edu/~jstone/downloads/papers/Lecture1.pdf}{slides}.
@@ -323,6 +323,197 @@ a pure eigenmode for one wavelength. The error better decrease linearly with
 increasing resolution. Some other tests include nonlinear circularly polarized
 Alfven waves, shocktubes, MHD instabilities, etc.
 
+\section{Lecture 2 --- Numerical Radiation MHD}
+
+Numerical MHD is a relatively mature field, and there are quite a few public
+codes that run well. However radiation MHD is still a very active field with
+almost no consensus method at all. We will talk about what is Radiation MHD, and
+numerical methods that we use.
+
+\subsection{Radiation Hydrodynamics}
+
+MHD is essential in black hole accretion disks, because angular momentum
+transport is driven by MHD turbulence! However if we are talking about accretion
+onto luminous sources, we need to consider radiation as well inside radius
+(Shakura \& Sunyaev 1973)
+\begin{equation}
+  \label{eq:4}
+  r/r_{g} < 170(L/L_\mathrm{Edd})^{16/21}(M/M_{\odot})^{2/21}
+\end{equation}
+Radiation pressure needs to be included in dynamic models. Radiation dominated
+disks are subject to various instabilities, e.g.\ viscous instability and
+thermal instability.
+
+Foundations of Radiation Hydrodynamics is a good book. The challenges in this
+field include:
+\begin{itemize}
+\item Which equations do we solve? Transfer equation vs. its moments.
+    \item Which frame do we solve the equations in? Co-moving frame vs. Eulerian
+      frame vs. mixed
+    \item We need a proper closure of moment equations
+    \item In diffusion limit the equations are hyperbolic-parabolic,
+      mathematically challenging
+    \item Wide range of timescales
+    \item Frequency dependence adds another dimension
+    \item Non-LTE effects requires modeling level populations
+\end{itemize}
+
+Radiation hydro means different things to different people. In some case it just
+means a source term in the energy equation which is an integral over all
+frequencies and scattering angles, which is a heating/cooling term by radiation.
+This could be done in Godunov scheme via operator splitting:
+\begin{itemize}
+\item Update flux divergence terms ignoring source terms
+    \item Update source terms
+\end{itemize}
+It is relatively easy to add a cooling term like $\rho^2\Lambda(T)$. However if
+we just add this term, then the code is subject to thermal instability. The
+growth rate is largest at small scales therefore grid scale truncation errors
+can quickly grow to make too much small scale structure. If one adds heat
+conduction this can be suppressed. It is crucial that one adds heat conduction
+to get an accurate solution.
+
+Another application domain is ionizing radiation transport, e.g.\ studying the
+growth of HII regions in ISM. Now in the energy equation we have the heating and
+cooling terms, and in the mass conservation equation we have ionization and
+recombination terms. To add these ionization terms we need to compute radiative
+transfer from every grid cell, which is a big challenge.
+
+One way is to use the adaptive ray-tracing method of Abel \& Wandelt (2002) and
+Whalen \& Norman (2006). The challenge is parallelization.
+
+Another class of problems in this domain is to consider momentum transfer
+instead of energy transfer. One now needs to include momentum exchange in the
+force equation. One application is line-driven winds (assuming gas is
+isothermal). However, the challenge is that computing this exchange term can be
+extremely difficult!
+
+Finally one might need to do the most general problem with both energy and
+momentum transfer. One need to close the equations with radiation field energy
+and momentum equation. One could even replace photons with neutrinos and do
+neutrino transport instead of photon transport, like in the core-collapse SNe
+community. All of the above problems can be called ``radiation hydrodynamics'',
+but the numerical methods required in each regime are very different. In the
+following part of the lecture we will focus on the problem with both energy and
+momentum transfer.
+
+Fundamental description of the radiation field is the frequency dependent
+transfer equation
+\begin{equation}
+  \label{eq:14}
+  \frac{1}{c}\frac{\partial I_{\nu}}{\partial t} + \nabla\cdot(\mathbf{n} I_{\nu}) = j_{\nu} - \kappa_{\nu}I_{\nu}
+\end{equation}
+One needs to decide to solve this equation or solving the moment of the
+equation. Even after choosing the equation we can choose our method to be either
+grid method or particle method. Grid methods are usually more accurate and less
+noisy, and particle methods (usually Monte Carlo) are usually very flexible and
+embarassingly parallelizable.
+
+The noise in Monte Carlo methods is a real problem. It gives about $1\%$ noise
+which could excite sound waves and other instabilities in the fluid. The Monte
+Carlo is also very expensive compared to grid-based methods. However MC is great
+for GR-RT which is used in EHT imaging of black holes, because it is not a
+radiation pressure dominated problem.
+
+\subsection{Numerical methods for radiation hydro}
+
+Lets look at the radiation moment equations
+\begin{align}
+  \frac{\partial\rho}{\partial t} + \nabla\cdot(\rho \mathbf{v}) &= 0 \\
+  \frac{\partial (\rho \mathbf{v})}{\partial t} + \nabla\cdot(\rho \mathbf{v}\mathbf{c} + P + B^2/2 - \mathbf{B}\mathbf{B}) &= -PS_M \\
+  \frac{\partial E}{\partial t} + \nabla\cdot \left[ (E + P)\mathbf{v} + (B^2/2)\mathbf{v} - \mathbf{B}(\mathbf{B}\cdot \mathbf{v}) \right]  &= -PC S_E \\
+  \frac{\partial \mathbf{B}}{\partial t} - \nabla\times(\mathbf{v}\times \mathbf{B}) &= 0 \\
+  \frac{\partial E_r}{\partial t} + C\nabla\cdot \mathbf{F}_r &= C S_{E} \\
+  \frac{\partial \mathbf{F}_r}{\partial t} + C \nabla\cdot P_r &= C S_{M}
+\end{align}
+
+One problem we have is the closure of these equations, since in general we can't
+assume the distribution function of photons is Maxwellian. One thing we can do
+is to assume $\mathbf{P} = \mathbf{f}E$, where $\mathbf{f}$ is called the
+Eddington tensor. The flux-limited diffusion method assumes that radiation flux
+is given by Ficks's Law
+\begin{equation}
+  \label{eq:15}
+  \mathbf{F} = \frac{c\lambda}{\chi}\nabla E
+\end{equation}
+where $\lambda(E)$ is limited to prevent super-luminal transport in optically
+thin regions. The other choice is the so-called M1 closure which assume a
+specific tensor from first principles by going into a frame of the fluid where
+the flow is isotropic. The third choice is to compute the Eddington tensor
+numerically which is called the variable Eddington tensor (VET) approach. One
+solves the time-independent transfer equations using method of short
+characteristics along $N_r$ rays per cell, and take quadrature to get the
+tensor.
+
+The flux-limited diffusion method reduces our problem to two-temperature
+diffusion problem (Turner \& Stone 2001). The main pro is that it is easy to
+solve, but it lost information about the direction of flux. It also does not
+have radiation inertia, therefore allowing superluminal wave speeds, and it has
+no radiation shear viscosity.
+
+We need a flux limiter $\lambda(E)$ and the most popular one is
+\begin{equation}
+  \label{eq:16}
+  \lambda(R) = \frac{2 + R}{6 + 3R + R^2},\quad R = \left| \nabla E \right|/E
+\end{equation}
+which gives correct flux in both optically thin and optically thick limits.
+
+Material radiation interaction and radiation transport terms have a very
+restrictive time step limit, so we need to use implicit scheme for the
+timestepping. The equations give sparse banded matrices which need to be solved
+every NR iteration. There are iterative methods like GMRES or ICCG. This problem
+is even worse in 3D. The challenge of doing flux-limited diffusion is solving
+linear algebra problems.
+
+There are approaches to get around this problem by reducing the speed of light
+in the medium. Since the flow speed in the ISM is way smaller than $c$ we can
+make the gap artificially smaller and solve the problem explicitly. However one
+can derive constraints on slowest speed allowed to give correct dynamics
+(Skinner \& Ostriker 2013).
+
+Lets now consider M1 closure. It is a much improved method over FLD (Gonzalez
+et.\ al.\ 2007). It keeps flux as a separate variable and uses local information
+to construct direction of flux. This fixes the shadowing problem with FLD, but
+replaces with photons colliding and merging problem. Photons behave like a
+collective fluid rather than particles, because M1 assumes there is a frame
+where the flow is isotropic while in reality there might not be. M1 is usually
+more attractive when there is a small number of sources.
+
+Finally there is the VET approach (Trujillo Bueno \& Fabiani Bendicho 1995). One
+could use short characteristics method solving only along ray segments that
+cross a single zone, or one could use long characteristics where we solve along
+rays that cross entire grid for each cell. Long characteristics are usually not
+feasible, but short characteristics can have problems in treating point sources,
+e.g.\ having spikes away from point sources which breaks symmetry.
+
+\subsection{Radiation in Godunov methods}
+
+Lets now consider how to put this into Godunov method. Assuming we have picked a
+scheme to solve the closure problem, we still face the problem of solving the
+Godulov method with stiff source terms. One could use semi-implicit (Picard
+iteration) schemes to ensure stability.
+
+When one consider long evolutions we might want to use implicit methods anyway,
+but it can be expensive and inaccurate. Instead we could split fully implicit
+solution of the radiation moment equations from modified Godunov method for MHD
+equation, and we write our own implicit solvers for the moment equations.
+
+A test for the full code is the classic linear wave convergence test. One could
+write down the linear waves of this system (quite nontrivial) and we can test
+the convergence to analytic solution in 3D with respect to grid resolution.
+
+One also need to do nonlinear tests since linear tests don't make use of all
+terms. One nonlinear test would be radiation shock tests. In radiation hydro one
+could have a precursor region which is heated up by the photons, and in the
+post-shock gas might cool (relaxation region) due to photons leaving. This
+structure depends on the Mach number. The particle mean free path and photon
+mean free path are two scales which can be very very different. Getting the
+shock structure is pretty difficult (semi)analytically.
+
+The cost of 3D RMHD equations using explicit differencing scales as
+$N_xN_yN_zN_mN_n$ where $N_m$ is number of angles, and $N_n$ is the number of
+frequencies. However this admits very efficient parallelization. One could also
+use adaptive angles and frequencies could be very powerful.
 
 
 
