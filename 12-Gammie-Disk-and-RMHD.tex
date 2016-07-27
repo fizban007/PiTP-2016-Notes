@@ -308,4 +308,259 @@ increases. It depends on the magnetic Reynolds number and $\mathrm{Pr}_{M} =
 
 Ran out of time\dots
 
+\section{Lecture 2 --- Relativistic MHD}
+
+\subsection{When is Relativistic MHD required?}
+
+The first situation when we need relativistic MHD is when one of the wave speeds
+is of order $c$. The characteristic wave speeds are usual one of $\mathbf{v}$,
+$\mathbf{v}_A$, and $\mathbf{v}_{s}$. The nonrelativistic sound speed can be
+defined as
+\begin{equation}
+  \label{eq:16}
+  c_{s,NP}^2 = \gamma\frac{P}{\rho}
+\end{equation}
+which blows up at high $\gamma$ and low $\rho$. If we do it correctly with
+relativistic theory we can find that
+\begin{equation}
+  \label{eq:17}
+  c_{s,R}^2 = \frac{\gamma P}{\rho + \frac{\gamma}{\gamma - 1}\frac{P}{c^2}} = \frac{c_{s,NR}^2}{1 + c_{s,NR}^2/(\gamma - 1)/c^2}
+\end{equation}
+In relativistic limit we have $\gamma = 4/3$, $\rho = 3P$, and we have sound
+speed as $c_s^2 = c^2/3$. If we still use ideal gas law $P = nkT$, and $n = \rho
+/ m$ then since we have in the relativistic limit $P \sim \rho c^2$
+\begin{equation}
+  \label{eq:18}
+  \theta = \frac{kT}{mc^2} \sim 1
+\end{equation}
+This dimensionless number for electron $\theta_{e} = 1$ means $T \sim 5.9\times
+10^7\,K$, and $\theta_p = 1$ means $T \sim 1.1 \times 10^{13}\,K$.
+
+Lets look at Alfven speed. For nonrelativistic case it is defined as $v_A =
+B/\sqrt{4\pi\rho}$, which blows up when $\rho \to 0$. We are saved in
+relativistic case by
+\begin{equation}
+  \label{eq:19}
+  v_{A, R} = \frac{\left| \mathbf{B} \right|}{\sqrt{4\pi\rho + B^2/c^2}}  = \frac{v_{A,NR}}{\sqrt{1 + v_{A,NR}^2/c^2}}
+\end{equation}
+Therefore in relativistic case $B$ field inertial comes into play. The
+dimensionless ratio here is
+\begin{equation}
+  \label{eq:20}
+  \sigma = \frac{B^2}{4\pi\rho c^2}
+\end{equation}
+
+Without looking at speeds, we also need relativistic hydro when
+\begin{equation}
+  \label{eq:21}
+  \phi \sim \frac{GM}{rc^2} \sim 1
+\end{equation}
+which accounts for gravity effects.
+
+\subsection{Basic equations}
+
+Lets write down the equations for relativistic MHD in conservative form in terms
+of fluxes and conserved quantities
+\begin{equation}
+  \label{eq:22}
+  \partial_t\mathsf{U} = -\nabla\cdot \mathsf{F} + \mathsf{S}
+\end{equation}
+Now we need to be careful about what are the conserved quantities and what is
+the divergence operator. What we are going to do is write down the
+nonrelativistic versions and use them to motivate the transition to relativistic
+version.
+
+The mass conservation equation looks like
+\begin{equation}
+  \label{eq:23}
+  \partial_t\rho = -\nabla\cdot(\rho \mathbf{v}) = -\partial_i(\rho v_i)
+\end{equation}
+The relativistic generalization is straightforward:
+\begin{equation}
+  \label{eq:24}
+  \nabla_{\mu}(\rho u^{\mu}) = 0
+\end{equation}
+where $u^{\mu} = dx^{\mu}/d\tau$. We need to define density a bit more
+carefully. $\rho$ is defined using the particle density in a frame that is
+comoving with the plasma. The $\nabla_{\mu}$ operator is the covariant
+derivative operator which was covered in lecture by Lehner. We define the gamma
+factor of the particles as $u^0 = \Gamma$, and $u^i = \Gamma v^{i}$. The 4
+velocity is normalized with $u^{\mu}u_{\mu} = -1$.
+
+The mass conservation equation can be expanded out in a coordinate in the
+following form:
+\begin{equation}
+  \label{eq:25}
+  \partial_t(\sqrt{-g}\rho u^t) = -\partial_i(\sqrt{-g}\rho u^i)
+\end{equation}
+where $g$ is the determinant of the metric tensor. This is because the
+4-divergence can be written as $1/\sqrt{-g}\partial_{\mu}(\sqrt{-g}\rho
+u^{\mu})$. This equation now looks like the form $\partial_t\mathsf{U} =
+-\nabla\cdot \mathsf{F}$.
+
+Now we look at energy momentum conservation equations. The nonrelativistic form
+looks like
+\begin{align}
+  \label{eq:26}
+  \partial_t \left( \frac{1}{2}\rho v^2 + U + \frac{B^2}{8\pi} \right) &= -\partial_i \left( \frac{1}{2}\rho v^2v_i + (U + P)v_i + \frac{1}{4\pi} \left( B^2v_i - (\mathbf{B}\cdot \mathbf{v})B_i \right) \right) \\
+  \partial_t(\rho v_i) &= -\partial_j\Pi_{ij}
+\end{align}
+where
+\begin{equation}
+  \label{eq:27}
+  \Pi_{ij} = \rho v_iv_j + P\delta_{ij} + \frac{B^2}{8\pi}\delta_{ij} - \frac{B_iB_j}{4\pi}
+\end{equation}
+In relativistic case these two equations combine to have the following simple
+form
+\begin{equation}
+  \label{eq:28}
+  \nabla_{\mu} T^{\mu\nu} = 0
+\end{equation}
+All the physics is now in the stress-energy tensor. This covariant derivative
+can be expanded in the coordinate form
+\begin{equation}
+  \label{eq:29}
+  \partial_t(\sqrt{-g}\tensor{T}{^t_{\mu}}) = -\partial_i \left( \sqrt{-g}\tensor{T}{^i_{\mu}} \right) + \sqrt{-g}\tensor{T}{^{\kappa}_{\lambda}}\tensor{\Gamma}{^{\lambda}_{\mu\kappa}}
+\end{equation}
+where $\Gamma$ is the connection related to $\partial g_{\mu\nu}$.
+
+Now lets write down the stress-energy tensor
+\begin{equation}
+  \label{eq:30}
+  T_{\mu\nu} = (\rho + U + P + b^2)u_{\mu}u_{\nu} + \left(P + \frac{b^2}{2} \right)g_{\mu\nu} - b_{\mu}b_{\nu}
+\end{equation}
+where $b_{\mu}$ has spatial components $b_i$ which is just the spatial magnetic
+field. In the fluid rest frame this tensor is diagonal, and if we choose $B$ to
+be aligned with $z$ direction then we have
+\begin{equation}
+  \label{eq:31}
+  T_{\mu\nu} = \text{diag} \left( \rho + U + \frac{b^2}{2}, P + \frac{b^2}{2}, P + \frac{b^2}{2}, P - \frac{b^2}{2} \right)
+\end{equation}
+Notice that the first term in the stress energy tensor has energy terms, so we
+already take into account the temperature of the plasma in the energy.
+
+Lets look at the magnetic field equation $\partial_t\mathbf{B} =
+\nabla\times(\mathbf{v}\times \mathbf{B}) = -\partial_j(v_{j}B_i - v_iB_j)$. It
+is easy to generalize this by promoting $\partial_i$ to $\nabla_i$ and $v$, $B$
+to $u$ and $b$, we have $\nabla_{\mu}(u^{\mu}b^{\nu} - u^{\nu}b^{\mu}) = 0$, and
+in coordinate basis it looks like:
+\begin{equation}
+  \label{eq:32}
+  \partial_t \left( \sqrt{-g}(u^tb^i - u^ib^t) \right) = -\partial_i \left( \sqrt{-g} (u^jb^i - u^i b^j)\right)
+\end{equation}
+This equation has 3 components, and the 4th component is simply the no-monopole
+constraint
+\begin{equation}
+  \label{eq:33}
+  \partial_i(\sqrt{-g}\tilde{B}^i) = 0
+\end{equation}
+where we define $\tilde{B}^i = b^iu^t - u^ib^t$.
+
+Now we can combine all these equations and write down what is $\mathsf{U}$,
+$\mathsf{F}$, and $\mathsf{S}$. The perimeter variables we want to use are
+$\rho$, $U$, $\tilde{B}^i$, and $u^i$. However $u^i$ are not convenient in e.g.\
+black hole ergospheres, so we define
+\begin{equation}
+  \label{eq:34}
+  \tilde{u}^i = (\tensor{g}{^i_{\mu}} + n^in_{\mu})u^{\mu}
+\end{equation}
+We can transform these into conserved variables $\mathsf{U}$ as
+\begin{equation}
+  \label{eq:35}
+  \left( \sqrt{-g}\rho u^t, \sqrt{-g}(\rho + U + P + b^2)u^tu_t + (P + b^2/2)g^t_t - b^tb_t, \sqrt{-g}\tilde{B}^{i} \right)
+\end{equation}
+
+Lets look at the Kerr metric. The Boyl-Lindquist coordinates is $t$, $r$,
+$\theta$, $\phi$, and we have $\partial_{\phi} = 0$ and $\partial_t = 0$. These
+two represent two Killing vectors $\xi$ which satisfy
+\begin{equation}
+  \label{eq:36}
+  \nabla_{\mu}\xi_{\nu} + \nabla_{\nu}\xi_{\mu} = 0
+\end{equation}
+For example $\xi_t^{\mu} = (1, 0, 0, 0)$, and similar for $\xi_{\phi}^{\mu}$. If
+we define conserved current as $J^{\mu} = T^{\mu}_{\nu}\xi^{\nu}$, then we
+automatically have $\nabla_{\mu}J^{\mu} = 0$ due to the definition of Killing
+vectors.
+
+\subsection{Numerical techniques}
+
+There are about a dozen codes out there that can integrate relativistic MHD
+equations. We start from perimeter variables $\mathsf{P}^n$ at timestep $n$ and
+find the conserved variables $\mathsf{U}^n$, integrate the equations to get
+$\mathsf{U}^{n+1}$ and do an inverse transform to get $\mathsf{P}^{n+1}$ which
+usually involves numerically solving systems of nonlinear equations.
+
+In HARM we don't solve Riemann problems, and we need to estimate $v_{\pm}$. It
+is diffusive in comparison to Athena++, but it is much simpler. We still need to
+keep $\nabla\cdot \mathbf{B} = 0$. One could simply do nothing and hope for the
+best, but that proved to not work. Another solution is to use the so-called
+constraint transport, which embed this constraint into the transport equation.
+Yet another approach is divergence cleaning, which solves periodically the
+closest $B$ field which has no divergence. A related approach is to evolve an
+additional field which causes in the induction equation an extra term that
+relaxes deviation from the constraint to zero over time. The final one is simply
+to evolve the vector potential, which is guaranteed to have $B$ field divergence
+free.
+
+The procedures to compute the time evolution of the conserved variables are now
+pretty well understood. However there is no analytic approach to get the
+fluxes so that is a challenge. It is also understood now that the inversion
+process in the end to get the perimeter variables does not dominate the
+numerical complexity.
+
+One problem that is common for both RMHD and MHD is that sometimes evolution
+takes conserved quantities to nonphysical values. Some codes simply inspect the
+quantities and for example put a floor on density values to prevent it from
+going negative. The reason one could do this is that this kind of scenario shows
+up in extreme cases and the change of a small negative density to zero does not
+change the system too much. In HARM it is imposed that
+\begin{equation}
+  \label{eq:37}
+  \rho > \rho_\mathrm{min},\quad U > U_\mathrm{min},\quad -n^{\mu}u_{\mu} < \Gamma_\mathrm{max}
+\end{equation}
+In the procedure of this fixup, one introduces error to the energy and
+temperature of the system, which is somewhat inevitable.
+
+Feynman said: ``The first principle is that you must not fool yourself, and you
+are the easiest person to fool''. One need to test the code to show correct
+convergence behavior. Typical code tests include linear wave convergence which
+only tests the code in the linear regime. Another test is Orszag-Tang vortex
+(Gammie et.\ al.\ 2003). We tested the code against another code VAC. One could
+also test against changing resolution. We also tested it with Kerr inflow
+(reversed Parker wind) which has an ``exact'' solution for us to compare with.
+
+Field loop advection problem and Komissarov's sadistic explosion problem\dots
+
+\subsection{Beyond ideal MHD}
+
+In low $\dot{M}$ BH accretion flows we have $\lambda_{mfp,\parallel}$ for
+Coulomb scattering much larger than the gravitation scale $GM/c^2$. However the
+perpendicular mean free path is still very small. The associated viscosity $\nu
+\sim v_\mathrm{th}\partial_{mfp}$ would be highly anisotropic. Particles can
+carry momentum along the field lines but not across field lines. There is also
+anisotropic thermal conduction. Since Coulomb collision is not very efficient
+the electron and ion temperatures will decouple.
+
+One theory include the viscosity and thermal conduction is the covariant
+extended MHD (Chandra+ 2015). This amounts to adding additional terms to the
+stress-energy tensor. In this model we add heat flux $q^{\mu} = q b^{\mu}$,
+where $b^{\mu}$ is a unit spacelike four-vector parallel to the $b$ field. There
+is also possible momentum transport parallel to the field
+\begin{equation}
+  \label{eq:38}
+  \tau^{\mu\nu} = -\Delta P \left( b^{\mu}b^{\nu} - (1/3)h^{\mu\nu} \right)
+\end{equation}
+where $h^{\mu\nu}$ is the projection tensor perpendicular to $u^{\mu}$ and
+$u^{\mu}$ is the 4-velocity. This is similar to the Braginskii stress tensor.
+
+A naive theory setting $q \sim \nabla T + Ta$ which is a combination of
+temperature gradient and 4-acceleration is unstable, mostly due to the
+4-acceleration term. One needs to promote $q$, $\Delta P$ to dependent variables
+and evolve them. One need to have equations for $q_0$, $\Delta P_0$, and
+relaxation equations for these. Finally one needs to have closure relation for
+$\chi$ and $\nu$.
+
+An inspirational paper is (Komissarov 1999) called ``A Godunov-type scheme for
+relativistic magnetohydrodynamics''.
+
 \end{document}
