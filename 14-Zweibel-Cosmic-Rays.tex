@@ -245,6 +245,136 @@ which simply means that particles at $t + \Delta t$ with $\mu$ can come from
 various ``kicks'' of different $\Delta \mu$. We are going to expand both sides,
 next time.
 
+\section{Lecture 2}
+
+Lets refresh our memory about some of the quantities we defined
+\begin{equation}
+  \label{eq:12}
+  \mu = \frac{\mathbf{p}\cdot \mathbf{B}}{pB}
+\end{equation}
+We define the probability of scattering, and then we could take the expectation
+value like the following
+\begin{equation}
+  \label{eq:13}
+  \frac{\left\langle \Delta \mu \right\rangle}{\Delta t} = \frac{1}{\xi \Delta t}\int \Delta\mu P(\mu, \Delta\mu)\,d\Delta\mu
+\end{equation}
+For a purely random process this expectation value should be zero. Similar
+expectation value expression for $\Delta\mu\Delta\mu$. We can derive an equation
+for $f$ by Taylor expanding equation \eqref{eq:11}
+\begin{equation}
+  \label{eq:14}
+  \frac{\partial f(\mu, t)}{\partial t} = -\frac{\partial}{\partial \mu}\left[ \frac{\left\langle \Delta\mu \right\rangle}{\Delta t}f(\mu, t) \right] + \frac{1}{2}\frac{\partial^2}{\partial\mu^2}\left[ \frac{\left\langle \Delta\mu\Delta\mu \right\rangle}{\Delta t}f(\mu, t) \right]
+\end{equation}
+Using chain rule we can expand the derivatives and we can see that there are
+terms with $f$, $\partial f$, and $\partial^2f$.
+
+$P$ preserves isotropy if and only if
+\begin{equation}
+  \label{eq:15}
+  -\frac{\left\langle \Delta\mu \right\rangle}{\Delta t} + \frac{\partial}{\partial\mu}\frac{\left\langle \Delta\mu\Delta\mu \right\rangle}{\Delta t} = 0
+\end{equation}
+If we assume this condition, then we can write the equation in a much simpler
+form
+\begin{equation}
+  \label{eq:16}
+  \frac{\partial f}{\partial t} = \frac{\partial}{\partial \mu}\frac{\left\langle \Delta\mu\Delta\mu \right\rangle}{2\Delta t}\frac{\partial f}{\partial \mu}
+\end{equation}
+This is simply a diffusion equation in pitch angle space, which is what we
+promised. If one does this in cylindrical coordinates, one could write
+\begin{equation}
+  \label{eq:17}
+  \frac{\partial f}{\partial t} = \frac{\partial}{\partial\mu}\frac{\nu(1 - \mu^2)}{2}\frac{\partial f}{\partial \mu}
+\end{equation}
+
+Lets consider the whole Vlasov equation with the scattering term, in 1D for simplicity
+\begin{equation}
+  \label{eq:18}
+  \frac{\partial f}{\partial t} + \mu v\frac{\partial f}{\partial z} + q \left( \frac{\mathbf{v}\times \mathbf{B}}{c} \nabla_pf \right) = \frac{\partial}{\partial\mu}\nu(1 - \mu^2)\frac{\partial f}{\partial \mu}
+\end{equation}
+where we define the one spatial dimension as the dimension of the magnetic field
+$\mathbf{B} = \hat{z}B$. In this case $\mathbf{v}\times \mathbf{B}$ goes to
+zero. We solve this equation using perturbation approach.
+
+There are three time scales in this problem. The first is the scattering time
+scale $1/\nu$. Second is the advective time scale $L/c$. Finally there is the
+evolution time $\tau$. We assume the hierarchy to be
+\begin{equation}
+  \label{eq:19}
+  \nu^{-1} \ll \frac{L}{c} \ll \tau
+\end{equation}
+If we do that then we can solve the Vlasov equation order by order. To lowest
+order we simply have
+\begin{equation}
+  \label{eq:20}
+  \frac{\partial f_0}{\partial \mu} = 0
+\end{equation}
+which says to zeroth order the cosmic ray is isotropic. The next order becomes
+\begin{equation}
+  \label{eq:21}
+  \mu v \frac{\partial f_0}{\partial z} = \frac{\partial}{\partial\mu}\nu(1 - \mu^2)\frac{\partial f_1}{\partial \mu}
+\end{equation}
+One could integrate this one time with respect to $\mu$:
+\begin{equation}
+  \label{eq:22}
+  \frac{\partial f_1}{\partial \mu} = -\frac{v}{\nu}\frac{\partial f_0}{\partial z}
+\end{equation}
+This simply says that the cosmic ray angle is simply related to the density
+anisotropy. The evolution equation for $f_0$ is
+\begin{equation}
+  \label{eq:23}
+  \frac{\partial f_0}{\partial t} = \frac{\partial}{\partial z}\frac{v^2}{3\nu}\frac{\partial f}{\partial z}
+\end{equation}
+where we now label $D = v^2/3\nu$.
+
+Lets now apply these to diffusive shock acceleration (DSA), following Blandford
+\& Ostriker. We assume there is a discontinuity as a shock, where $u_1$ and
+$u_2$ are the velocities upstream and downstream. There is a magnetic field
+along the flow direction. $u_1$ and $u_2$ are related by mass conservation. If
+there is a compression ratio $\rho_2 = r\rho_1$, then $u_2 = u_{1}/r$. A cosmic
+ray starts downstream, undergoes a head-on collision at upstream, gains energy
+by $2p\cdot u_1$, and at downstream it collides again and loses energy by
+$2p\cdot u_2$. Because $u_1 > u_2$ the cosmic ray gains net energy, as opposed
+to the second order Fermi process.
+
+How do we characterize this process in math? Leap of faith:
+\begin{equation}
+  \label{eq:24}
+  \frac{\partial f}{\partial t} + u\frac{\partial f}{\partial z} - \frac{p}{3}\frac{\partial u}{\partial z}\frac{\partial f}{\partial p} = \frac{\partial}{\partial z}D\frac{\partial f}{\partial z}
+\end{equation}
+To get a feeling of why this equation is viable, one can integrate over momentum
+space to get the continuity equation ($n = \int f d^3p$)
+\begin{equation}
+  \label{eq:25}
+  \frac{\partial n}{\partial t} = -\frac{\partial}{\partial z}(u n)
+\end{equation}
+The second way is that if we multiply the equation by $cp/3$ we can get the
+pressure equation for a $\gamma = 4/3$ gas.
+
+Now lets look at the equation. We assume steady state $\partial_t = 0$ and
+idealize the shock as a delta function $\partial u/\partial z = (u_2 -
+u_1)\delta(z)$. Now the equation simply becomes
+\begin{equation}
+  \label{eq:26}
+  u\frac{\partial f}{\partial z} = \frac{\partial}{\partial z}D\frac{\partial f}{\partial z}
+\end{equation}
+Lets apply the jump condition (which is in the notes), and then we can get
+\begin{equation}
+  \label{eq:27}
+  f_z(p) \propto p^{-3r/(r - 1)}
+\end{equation}
+What is $r$? For a gas with $\gamma$ this is
+\begin{equation}
+  \label{eq:28}
+  \gamma \to \frac{\gamma + 1}{\gamma - 1},\quad \text{for } \frac{u_1}{c_s} \gg 1
+\end{equation}
+For a gas with $\gamma = 5/3$ we have $r \to 4$ which agrees nicely with
+observation. We said SNe can't be direct source of cosmic rays but now DSA
+provides a way to accelerate cosmic ray from SNe.
+
+Two problems remain however. We have no shock layer, and we don't know the amplitude of
+the spectrum.
+
+Now turn to the slides\dots notes end here.
 
 
 \end{document}
